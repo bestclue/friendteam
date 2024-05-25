@@ -1,3 +1,4 @@
+import ImageUpload from '../components/ImageUpload';
 import Image from "next/image";
 
 export default function Home() {
@@ -110,6 +111,9 @@ export default function Home() {
           </p>
         </a>
       </div>
+
+      {/* Image Upload Component */}
+      <ImageUpload />
     </main>
   );
 }
