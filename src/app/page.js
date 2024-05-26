@@ -1,11 +1,9 @@
-import TodoList from "@/components/TodoList";
-import ImageUpload from '@/components/ImageUpload';
+import Main from "@/components/Main";
 
 export default function Home() {
   return (
     <div>
-      <TodoList />
-      <ImageUpload />
+      <Main/>
     </div>
   );
 }

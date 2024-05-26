@@ -1,3 +1,7 @@
 //메인페이지
 import Diary from "@/components/Diary";
-return <Diary/>;
+const Main  = () => {
+    return <Diary/>;
+};
+
+export default Main;
