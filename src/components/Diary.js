@@ -2,9 +2,12 @@
 
 import React, { useState } from 'react';
 import Chat from '@/components/Chat';
+
+import { db, storage } from "@/firebase";
+
+import { collection, addDoc } from "firebase/firestore";
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import ImageUpload from '@/components/ImageUpload';
-import { collection, addDoc } from 'firebase/firestore';
-import { db, storage } from '../firebase';
 
 const Diary = ({ onChat }) => {
     const [url, setUrl] = useState('');
@@ -56,6 +59,9 @@ const Diary = ({ onChat }) => {
             </div>
             <div className="flex flex-col w-full bg-white p-6 border rounded-lg shadow-md">
                 <h2 className="text-2xl font-semibold mb-4 text-gray-800">Diary Entry</h2>
+                <div className="border-dashed border-2 border-gray-300 p-6 h-1/3 rounded-lg flex items-center justify-center text-gray-500 mb-4">
+                    이미지 업로드
+                </div>
                 <ImageUpload setUrl={(url) => {
   console.log('Received URL:', url); // 확인용 로그
   handleImageUpload(url);
