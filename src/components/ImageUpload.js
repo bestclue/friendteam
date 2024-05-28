@@ -29,7 +29,9 @@ const ImageUpload = () => {
     try {
       await uploadBytes(storageRef, image);
       const downloadURL = await getDownloadURL(storageRef);
+      console.log('Download URL:', downloadURL);
       setUrl(downloadURL);
+      console.log('setUrl 호출 후 URL:', downloadURL);  // setUrl 호출 후 확인
       alert('Image uploaded successfully!');
     } catch (error) {
       console.error('Error uploading image: ', error);
