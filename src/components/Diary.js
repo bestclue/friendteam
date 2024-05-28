@@ -7,6 +7,7 @@ import { db, storage } from "@/firebase";
 
 import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
+import ImageUpload from './ImageUpload';
 
 const Diary = ({ onChat }) => {
     return (
@@ -19,6 +20,7 @@ const Diary = ({ onChat }) => {
                 <div className="border-dashed border-2 border-gray-300 p-6 h-1/3 rounded-lg flex items-center justify-center text-gray-500 mb-4">
                     이미지 업로드
                 </div>
+                <ImageUpload/>
                 <textarea 
                     className="w-full p-4 border rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                     rows="10"
