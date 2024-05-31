@@ -1,18 +1,35 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Chat from '@/components/Chat';
+
 
 import { db, storage } from "@/firebase";
 
 import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import ImageUpload from '@/components/ImageUpload';
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
-const Diary = ({ onChat }) => {
+const Diary = ({ onChat,user }) => {
     const [url, setUrl] = useState('');
     const [videoUrl, setVideoUrl] = useState('');
     const [text, setText] = useState('');
+    const [currentUser, setCurrentUser] = useState(null); // 사용자 상태 추가
+
+    const router = useRouter();
+    const { data } = useSession({
+      required: true,
+      onUnauthenticated() {
+        router.replace("/login");
+      },
+    });
+
+    useEffect(() => {
+        console.log("data", data);
+       
+    }, []);
 
     const handleImageUpload = async (url) => {
         if (!url) {
@@ -29,6 +46,9 @@ const Diary = ({ onChat }) => {
     };
 
     const handleSaveEntry = async () => {
+          // 유저 정보와 텍스트가 입력되었는지 확인
+          if (data?.usef?.name) return;
+    
         // 이미지와 텍스트가 입력되었는지 확인
         if (!text) {
             alert('Please enter text before saving.');
@@ -41,8 +61,9 @@ const Diary = ({ onChat }) => {
         try {
             // 텍스트와 이미지 URL을 Firestore에 저장
             const docRef = await addDoc(collection(db, 'diaryEntries'), {
+                userName: data?.user?.name,
                 text: text,
-                url: url
+                url: url,
             });
             console.log('Document written with ID: ', docRef.id);
             alert('Entry saved successfully!');
