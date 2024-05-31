@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import Chat from '@/components/Chat';
-
+import ChatPage from '@/components/ChatPage';
+import ChatInput from '@/components/ChatInput';
 
 import { db, storage } from "@/firebase";
 
@@ -17,6 +17,8 @@ const Diary = ({ onChat,user }) => {
     const [videoUrl, setVideoUrl] = useState('');
     const [text, setText] = useState('');
     const [currentUser, setCurrentUser] = useState(null); // 사용자 상태 추가
+    const [chatHistory, setChatHistory] = useState([]);
+    const [parsedData, setParsedData] = useState(null);
 
     const router = useRouter();
     const { data } = useSession({
@@ -44,6 +46,33 @@ const Diary = ({ onChat,user }) => {
     const handleTextChange = (e) => {
         setText(e.target.value);
     };
+
+const handleKeyPress = async (e) => {
+    if (e.key === 'Enter') {
+        try {
+            console.log("Fetching AI response..."); // 네트워크 요청 확인
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ messages: [{ role: 'user', parts: [{ text }] }] }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error fetching response from AI: Network response was not ok');
+            }
+
+            const responseData = await response.json();
+            console.log("Response from AI:", responseData); // 응답 확인
+
+            setParsedData(responseData);
+            setChatHistory((prevHistory) => [...prevHistory, parsedData]);
+        } catch (error) {
+            console.error('Error fetching response from AI:', error); // 에러 확인
+        }
+    }
+};
 
     const handleSaveEntry = async () => {
           // 유저 정보와 텍스트가 입력되었는지 확인
@@ -76,23 +105,25 @@ const Diary = ({ onChat,user }) => {
     return (
         <div className="flex flex-col md:flex-row p-6 bg-gradient-to-b from-purple-400 to-pink-400 min-h-screen">
             <div className="md:w-1/4 w-full mb-6 md:mb-0 md:mr-6 ">
-                <Chat className="border rounded-lg shadow-md bg-white p-4"/>
+                <ChatPage className="border rounded-lg shadow-md bg-white p-4"
+                parsedData={parsedData} onParsedData={handleKeyPress}/>
             </div>
             <div className="flex flex-col w-full bg-[#E4DAFF] p-6 border rounded-lg shadow-md">
                 <h2 className="text-2xl font-semibold mb-4 text-gray-800">Diary Entry</h2>
                 <div className="border-dashed border-2 border-purple-500 p-6 h-1/3 rounded-lg flex items-center justify-center text-gray-500 mb-4">
                     이미지 업로드
+                    <ImageUpload setUrl={(url) => {
+                        console.log('Received URL:', url); // 확인용 로그
+                        handleImageUpload(url);
+                        }} />
                 </div>
-                <ImageUpload setUrl={(url) => {
-  console.log('Received URL:', url); // 확인용 로그
-  handleImageUpload(url);
-}} />
                 <textarea 
                     className="w-full p-4 border rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none mt-4"
                     rows="10"
                     placeholder="Enter your thoughts here..."
                     value={text}
                     onChange={handleTextChange}
+                    onKeyDown={handleKeyPress}
                 ></textarea>
                 <button 
                     onClick={handleSaveEntry} 
