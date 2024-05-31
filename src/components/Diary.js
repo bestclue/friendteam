@@ -74,13 +74,13 @@ const Diary = ({ onChat,user }) => {
     };
 
     return (
-        <div className="flex flex-col md:flex-row p-6 bg-gray-100 min-h-screen">
-            <div className="md:w-1/4 w-full mb-6 md:mb-0 md:mr-6">
+        <div className="flex flex-col md:flex-row p-6 bg-gradient-to-b from-purple-400 to-pink-400 min-h-screen">
+            <div className="md:w-1/4 w-full mb-6 md:mb-0 md:mr-6 ">
                 <Chat className="border rounded-lg shadow-md bg-white p-4"/>
             </div>
-            <div className="flex flex-col w-full bg-white p-6 border rounded-lg shadow-md">
+            <div className="flex flex-col w-full bg-[#E4DAFF] p-6 border rounded-lg shadow-md">
                 <h2 className="text-2xl font-semibold mb-4 text-gray-800">Diary Entry</h2>
-                <div className="border-dashed border-2 border-gray-300 p-6 h-1/3 rounded-lg flex items-center justify-center text-gray-500 mb-4">
+                <div className="border-dashed border-2 border-purple-500 p-6 h-1/3 rounded-lg flex items-center justify-center text-gray-500 mb-4">
                     이미지 업로드
                 </div>
                 <ImageUpload setUrl={(url) => {
@@ -96,7 +96,7 @@ const Diary = ({ onChat,user }) => {
                 ></textarea>
                 <button 
                     onClick={handleSaveEntry} 
-                    className="mt-4 p-2 bg-blue-500 text-white rounded-lg"
+                    className="mt-4 p-2 bg-[#653CD5] text-white rounded-lg"
                 >
                     Save Entry
                 </button>
