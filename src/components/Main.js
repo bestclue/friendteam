@@ -1,25 +1,25 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useSession, SessionProvider } from "next-auth/react";
 import Diary from "@/components/Diary";
+import "@/styles/diary.css"; 
 
-const Main = () => {
-  const router = typeof window !== 'undefined' ? useRouter() : null;
-  const { data: session, status } = useSession({
-    required: true,
-    onUnauthenticated() {
-      if (router) {
-        router.replace("/login");
-      }
-    },
-  });
+const Main = ({ date }) => {
+  const { data: session } = useSession();
 
-  useEffect(() => {
-    // 클라이언트 사이드에서만 라우터 사용
-    if (!router) return;
-  }, [router]);
-
-  return <Diary user={session?.user} />;
+  return (
+    <div>
+      <Diary user={session?.user} />
+    </div>
+  );
 };
 
-export default Main;
+const MainWithSession = ({ date }) => {
+  return (
+    <SessionProvider>
+      <Main date={date} />
+    </SessionProvider>
+  );
+};
+
+export default MainWithSession;
