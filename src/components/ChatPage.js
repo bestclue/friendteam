@@ -64,6 +64,12 @@ const ChatPage = ({ parsedData, onParsedData }) => {
     handleReset();
   }, []);
 
+  useEffect(() => {
+    if (parsedData) {
+      setMessages((messages) => [...messages, parsedData]);
+    }
+  }, [parsedData]);
+
   return (
     <>
       <Head>
@@ -73,8 +79,8 @@ const ChatPage = ({ parsedData, onParsedData }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="flex flex-col h-screen">
-        <div className="flex h-[50px] sm:h-[60px] border-b border-neutral-300 py-2 px-2 sm:px-8 items-center justify-between">
+      <div className="flex flex-col h-full">
+        {/* <div className="flex h-[50px] sm:h-[60px] border-b border-neutral-300 py-2 px-2 sm:px-8 items-center justify-between">
           <div className="font-bold text-3xl flex text-center">
             <a
               className="ml-2 hover:opacity-50"
@@ -83,29 +89,26 @@ const ChatPage = ({ parsedData, onParsedData }) => {
               감성일기
             </a>
           </div>
-        </div>
+        </div> */}
 
         <div className="flex-1 overflow-auto sm:px-10 pb-4 sm:pb-10">
           <div className="max-w-[800px] mx-auto mt-4 sm:mt-12">
             {/* AI 메시지 출력 */}
             <div className="mb-4 overflow-y-auto" style={{ maxHeight: "200px" }}>
-                {messages
-                .filter((message) => message.role === "model")
-                .map((message, index) => (
-                  <div key={index} className="my-1 sm:my-1.5">
-                    <ChatBubble message={message} />
-                  </div>
-                ))}
-                {loading && (
+                {loading ? (
                   <div className="my-1 sm:my-1.5">
                     <ChatLoader />
                  </div>
-                )}
-                {parsedData && (
-                <div className="my-1 sm:my-1.5">
-                    <ChatBubble message={parsedData} />
-                </div>
-            )}
+                ):
+                (messages
+                  .filter((message) => message.role === "model")
+                  .slice(-1)
+                  .map((message, index) => (
+                    <div key={index} className="my-1 sm:my-1.5">
+                      <ChatBubble message={message} />
+                    </div>
+                  )))
+                }
             </div>
 
              {/* 이미지 출력 */}
@@ -113,7 +116,7 @@ const ChatPage = ({ parsedData, onParsedData }) => {
                <img src="감성일기 곰돌이 기본.png" alt="감성일기 곰돌이 기본" width="700" height="600" style={{ marginTop: '150px' }} ></img>
             </div>
 
-            {/* 사용자 메시지 출력 */}
+            {/* 사용자 메시지 출력
             <div className="mb-4 overflow-y-auto" style={{ maxHeight: "200px" }}>
               {messages
                 .filter((message) => message.role === "user")
@@ -122,7 +125,7 @@ const ChatPage = ({ parsedData, onParsedData }) => {
                     <ChatBubble message={message} />
                   </div>
                 ))}
-            </div>
+            </div> */}
 
             <div ref={messagesEndRef} />
           </div>

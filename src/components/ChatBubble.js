@@ -1,6 +1,6 @@
 export const ChatBubble = ({ message }) => {
     return (
-      <div className={`flex justify-${message.role === "model" ? "start" : "end"} mb-2`}>
+      <div className={`h-auto flex justify-${message.role === "model" ? "start" : "end"} mb-2`}>
         <div
           className={`max-w-[90%] ${
             message.role === "model" ? "items-start" : "items-end"

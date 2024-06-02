@@ -32,7 +32,7 @@ const Diary = ({ onChat, user }) => {
     console.log("data", data);
   }, []);
 
-  const handleImageUpload = async (url) => {
+  const handleImageUpload = (url) => {
     if (!url) {
       alert('Please select an image before uploading.');
       return;
@@ -95,6 +95,7 @@ const Diary = ({ onChat, user }) => {
         userName: data?.user?.name,
         text: text,
         url: url,
+        date: Date.now(),
       });
       console.log('Document written with ID: ', docRef.id);
       alert('Entry saved successfully!');
@@ -105,20 +106,14 @@ const Diary = ({ onChat, user }) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row p-6 bg-gradient-to-b from-purple-400 to-pink-400 min-h-screen">
+    <div className="flex flex-col md:flex-row p-6 bg-gradient-to-b from-purple-400 to-pink-400 h-full">
       <div className="md:w-1/4 w-full mb-6 md:mb-0 md:mr-6 ">
         <ChatPage className="border rounded-lg shadow-md bg-white p-4"
           parsedData={parsedData} onParsedData={handleKeyPress} />
       </div>
       <div className="flex flex-col w-full bg-[#E4DAFF] p-6 border rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold mb-4 text-gray-800">Diary Entry</h2>
-        <div className="border-dashed border-2 border-purple-500 p-6 h-1/3 rounded-lg flex items-center justify-center text-gray-500 mb-4">
-          이미지 업로드
-          <ImageUpload setUrl={(url) => {
-            console.log('Received URL:', url); // 확인용 로그
-            handleImageUpload(url);
-          }} />
-        </div>
+          <ImageUpload ondownloadURL={handleImageUpload} name={data?.user?.name}/>
         <textarea
           className="w-full p-4 border rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none mt-4"
           rows="10"
@@ -131,7 +126,7 @@ const Diary = ({ onChat, user }) => {
           onClick={handleSaveEntry}
           className="mt-4 p-2 bg-[#653CD5] text-white rounded-lg"
         >
-          Save Entry
+          Save Diary
         </button>
       </div>
     </div>
