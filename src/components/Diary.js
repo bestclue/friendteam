@@ -75,17 +75,20 @@ const Diary = ({ onChat, user }) => {
 
   const handleSaveEntry = async () => {
     // 유저 정보와 텍스트가 입력되었는지 확인
-    if (data?.user?.name) return;
-
+    if (!data?.user?.name) {
+      alert('Please log in before saving.'); // 로그인이 되어 있지 않은 경우 알림을 표시하고 저장을 중단합니다.
+      return;
+    }
+  
     // 이미지와 텍스트가 입력되었는지 확인
     if (!text) {
       alert('Please enter text before saving.');
       return;
     }
-
+  
     console.log('저장할 텍스트:', text);  // 텍스트 확인
     console.log('저장할 이미지 URL:', url);  // 이미지 URL 확인
-
+  
     try {
       // 텍스트와 이미지 URL을 Firestore에 저장
       const docRef = await addDoc(collection(db, 'diaryEntries'), {
