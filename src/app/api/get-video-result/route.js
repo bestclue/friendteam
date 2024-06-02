@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from '../firebase';
+import { storage } from '@/firebase';
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url, `http://${req.headers.host}`);
