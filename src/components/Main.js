@@ -2,7 +2,8 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { useSession, SessionProvider } from "next-auth/react";
 import Diary from "@/components/Diary";
-import "@/styles/diary.css"; 
+
+import "../styles/globals.css";
 
 const Main = ({ date }) => {
   const { data: session } = useSession();
