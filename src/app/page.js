@@ -1,13 +1,13 @@
 "use client";
 
 import { SessionProvider } from "next-auth/react";
-import CalendarMain from "@/components/CalendarMain";
+import Main from "@/components/Main";
 
 export default function Home() {
   return (
     <SessionProvider> 
       <div>
-        <CalendarMain />
+        <Main/>
       </div>
     </SessionProvider>
   );
