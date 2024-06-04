@@ -15,6 +15,14 @@ export default function Login() {
     signOut({ callbackUrl: "/login" });
   };
 
+  if (session) {
+    router.push("/");
+  }
+  useEffect(() => {
+    console.log(session);
+  });
+  
+  
   return (
     <div className="flex justify-center h-screen" style={{ background:'linear-gradient(to bottom, #A96BFB, #FFACDE)', fontFamily: 'Nanum Gothic'}}>
       <style>
