@@ -1,14 +1,14 @@
 import axios from "axios";
-import fs from "node:fs";
-import path from "path";
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from '@/firebase';
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url, `http://${req.headers.host}`);
   const generationId = searchParams.get("generationId");
   const apiKey = searchParams.get("apiKey");
 
-  console.log("Generation ID for fetching result:", generationId);  // Add this line to print the generation ID
-  console.log("API Key for fetching result:", apiKey);  // Add this line to print the API Key
+  console.log("Generation ID for fetching result:", generationId);
+  console.log("API Key for fetching result:", apiKey);
 
   try {
     const response = await axios.request({
@@ -28,9 +28,16 @@ export async function GET(req) {
         headers: { 'Content-Type': 'application/json' },
       });
     } else if (response.status === 200) {
-      const videoPath = path.join(process.cwd(), "public", "video.mp4");
-      fs.writeFileSync(videoPath, Buffer.from(response.data));
-      return new Response(JSON.stringify({ message: "Generation is complete!", videoUrl: "/video.mp4" }), {
+      const videoBuffer = Buffer.from(response.data);
+      const storageRef = ref(storage, `videos/${generationId}.mp4`);
+
+      // Upload the video to Firebase Storage
+      await uploadBytes(storageRef, videoBuffer);
+
+      // Get the download URL
+      const downloadUrl = await getDownloadURL(storageRef);
+
+      return new Response(JSON.stringify({ message: "Generation is complete!", videoUrl: downloadUrl }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
       });

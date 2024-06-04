@@ -1,34 +1,49 @@
 "use client";
 
 import { useState } from 'react';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { storage } from '../firebase';
 
-const ImageUpload = () => {
+const ImageUpload = ({ ondownloadURL, name }) => {
   const [image, setImage] = useState(null);
   const [url, setUrl] = useState('');
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file && file.type.startsWith('image/')) {
       setImage(file);
+      if (url) {
+        await deleteExistingImage(url);
+      }
+      await handleSubmit(file);
     } else {
       alert('Please select a valid image file');
       setImage(null);
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!image) {
+  const deleteExistingImage = async (url) => {
+    const fileRef = ref(storage, url);
+    try {
+      await deleteObject(fileRef);
+      console.log('Existing image deleted successfully');
+    } catch (error) {
+      console.error('Error deleting existing image: ', error);
+      alert('Error deleting existing image');
+    }
+  };
+
+  const handleSubmit = async (file) => {
+    if (!file) {
       alert('Please select an image first');
       return;
     }
 
-    const storageRef = ref(storage, `uploads/${image.name}`);
+    const storageRef = ref(storage, `uploads/${name}/${file.name}`);
     try {
-      await uploadBytes(storageRef, image);
+      await uploadBytes(storageRef, file);
       const downloadURL = await getDownloadURL(storageRef);
+      ondownloadURL(downloadURL);
       console.log('Download URL:', downloadURL);
       setUrl(downloadURL);
       console.log('setUrl 호출 후 URL:', downloadURL);  // setUrl 호출 후 확인
@@ -40,19 +55,20 @@ const ImageUpload = () => {
   };
 
   return (
-    <div className="mt-10">
-      <form onSubmit={handleSubmit} className="flex flex-col items-center">
-        <input type="file" onChange={handleImageChange} />
-        <button type="submit" className="mt-4 px-4 py-2 bg-[#653CD5] text-white rounded">
-          Upload
-        </button>
-      </form>
-      {url && (
+    <div className="mt-10 w-full">
+      <form className="flex flex-col items-center">
+        <label
+          className="w-full cursor-pointer flex flex-col items-center justify-center border-dashed border-2 border-purple-500 p-6 h-full rounded-lg text-gray-500 mb-4"
+        >
+          <input type="file" onChange={handleImageChange} className="hidden" />
+          
+          {url ? (
         <div className="mt-4">
-          <h2 className="text-xl">Uploaded Image</h2>
           <img src={url} alt="Uploaded" style={{ maxWidth: '100%' }} />
         </div>
-      )}
+      ): (<span className="text-gray-500">이미지 업로드</span>)}
+        </label>
+      </form>
     </div>
   );
 };

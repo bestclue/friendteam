@@ -1,17 +1,20 @@
-import fs from "node:fs";
 import axios from "axios";
 import FormData from "form-data";
 
 export async function POST(req) {
-  const { apiKey } = await req.json();
-
-  const data = new FormData();
-  data.append("image", fs.readFileSync("./public/image.png"), "image.png");
-  data.append("seed", 0);
-  data.append("cfg_scale", 0.5);
-  data.append("motion_bucket_id", 100);
+  const { apiKey, imageUrl } = await req.json();
 
   try {
+    // Fetch the image from the URL
+    const imageResponse = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+    const imageBuffer = Buffer.from(imageResponse.data, 'binary');
+
+    const data = new FormData();
+    data.append("image", imageBuffer, "image.png");
+    data.append("seed", 0);
+    data.append("cfg_scale", 0.5);
+    data.append("motion_bucket_id", 100);
+
     const response = await axios.request({
       url: `https://api.stability.ai/v2beta/image-to-video`,
       method: "post",
@@ -23,7 +26,7 @@ export async function POST(req) {
       data: data,
     });
 
-    console.log("Generation ID:", response.data.id);  // Add this line to print the generation ID
+    console.log("Generation ID:", response.data.id);
 
     return new Response(JSON.stringify({ generationId: response.data.id }), {
       status: 200,

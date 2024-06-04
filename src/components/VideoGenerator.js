@@ -1,22 +1,24 @@
 'use client'
 import { useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
-const VideoGenerator = () => {
+const VideoGenerator = ({ url }) => {
   const [apiKey, setApiKey] = useState("");
   const [generationId, setGenerationId] = useState(null);
   const [videoUrl, setVideoUrl] = useState(null);
   const [status, setStatus] = useState(null);
 
   const generateVideo = async () => {
-    if (!apiKey) {
-      setStatus("API key is required");
+    if (!apiKey || !url) {
+      setStatus("API key and image URL are required");
       return;
     }
 
     try {
-      const response = await axios.post("/api/generate-video", { apiKey });
-      console.log("Generation ID received:", response.data.generationId);  // Add this line
+      const response = await axios.post("/api/generate-video", { apiKey, imageUrl: url });
+      console.log("Generation ID received:", response.data.generationId);
       setGenerationId(response.data.generationId);
       setStatus("Video generation started...");
     } catch (error) {
@@ -33,7 +35,7 @@ const VideoGenerator = () => {
       if (response.status === 202) {
         setStatus("Generation is still running, try again in 10 seconds.");
       } else if (response.status === 200) {
-        console.log("Video URL received:", response.data.videoUrl);  // Add this line
+        console.log("Video URL received:", response.data.videoUrl);
         setVideoUrl(response.data.videoUrl);
         setStatus("Generation is complete!");
       }
@@ -57,7 +59,6 @@ const VideoGenerator = () => {
           <button onClick={checkVideoResult}>Check Video Result</button>
         </div>
       )}
-      <span>response.data.id</span>
       {videoUrl && (
         <div>
           <h2>Generated Video</h2>
