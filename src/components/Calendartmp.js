@@ -133,6 +133,9 @@ const RenderCells = ({
         return "text-orange-light";
       case 3:
         return "text-orange";
+      case 4:
+        return "text-pink";
+      
       default:
         return "text-gray-lightest";
     }
