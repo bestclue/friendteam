@@ -8,16 +8,14 @@ export default function Login() {
   const { data: session } = useSession();
 
   const handleSignIn = () => {
-    signIn("your_provider_name", { callbackUrl: "/" });
+    signIn("kakao");
   };
 
-  const handleSignOut = () => {
-    signOut({ callbackUrl: "/login" });
-  };
 
   if (session) {
     router.push("/");
   }
+
   useEffect(() => {
     console.log(session);
   });
@@ -47,19 +45,14 @@ export default function Login() {
       <div className="grid m-auto text-center">
         {session ? (
           <>
-            <div className="m-4">Signed in as {session.user.name}</div>
-            <button
-              className="custom-button"
-              onClick={() => router.push("/")}
-            >
-              Go to Home
-            </button>
-            <button
-              className="custom-button"
-              onClick={handleSignOut}
-            >
-              Sign out
-            </button>
+          <div className="flex flex-col justify-center text-center space-y-10">
+            <div className="font-semibold text-xl">
+              로그인 중입니다.
+              <br />
+              <br />
+              잠시 기다려주세요.
+            </div>
+          </div>
           </>
         ) : (
           <>

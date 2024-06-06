@@ -6,31 +6,20 @@ import ChatInput from '@/components/ChatInput';
 
 import { db, storage } from "@/firebase";
 
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, setDoc } from "firebase/firestore";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import ImageUpload from '@/components/ImageUpload';
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import Emotion from "@/components/Emotion";
 
-const Diary = ({ onChat, user }) => {
+const Diary = ({ onChat, user, ondiaryinput, name}) => {
   const [url, setUrl] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
   const [text, setText] = useState('');
+  const [emotion, setEmotion] = useState('');
   const [currentUser, setCurrentUser] = useState(null); // 사용자 상태 추가
   const [chatHistory, setChatHistory] = useState([]);
-  const [parsedData, setParsedData] = useState(null);
 
-  const router = useRouter();
-  const { data } = useSession({
-    required: true,
-    onUnauthenticated() {
-      router.replace("/login");
-    },
-  });
 
-  useEffect(() => {
-    console.log("data", data);
-  }, []);
 
   const handleImageUpload = (url) => {
     if (!url) {
@@ -46,36 +35,21 @@ const Diary = ({ onChat, user }) => {
     setText(e.target.value);
   };
 
+  const handleEmotion = (emotion) => {
+    setEmotion(emotion);
+    console.log(emotion);
+  }
   const handleKeyPress = async (e) => {
     if (e.key === 'Enter') {
-      try {
-        console.log("Fetching AI response..."); // 네트워크 요청 확인
-        const response = await fetch('/api/chat', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ messages: [{ role: 'user', parts: [{ text }] }] }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Error fetching response from AI: Network response was not ok');
-        }
-
-        const responseData = await response.json();
-        console.log("Response from AI:", responseData); // 응답 확인
-
-        setParsedData(responseData);
-        setChatHistory((prevHistory) => [...prevHistory, parsedData]);
-      } catch (error) {
-        console.error('Error fetching response from AI:', error); // 에러 확인
-      }
+      const lastNewlineIndex = text.lastIndexOf('\n');
+      const recentText = lastNewlineIndex !== -1 ? text.slice(lastNewlineIndex + 1) : text;
+      ondiaryinput(recentText);
     }
   };
 
   const handleSaveEntry = async () => {
     // 유저 정보와 텍스트가 입력되었는지 확인
-    if (!data?.user?.name) {
+    if (!name) {
       alert('Please log in before saving.'); // 로그인이 되어 있지 않은 경우 알림을 표시하고 저장을 중단합니다.
       return;
     }
@@ -86,16 +60,15 @@ const Diary = ({ onChat, user }) => {
       return;
     }
   
-    console.log('저장할 텍스트:', text);  // 텍스트 확인
+    console.log('저장할 텍스트:', text); 
+    console.log('감정', emotion); // 텍스트 확인
     console.log('저장할 이미지 URL:', url);  // 이미지 URL 확인
   
     try {
       // 텍스트와 이미지 URL을 Firestore에 저장
-      const docRef = await addDoc(collection(db, 'diaryEntries'), {
-        userName: data?.user?.name,
+      const docRef = await setDoc(doc(db, 'diaryEntries',`${name}_${new Date().toISOString()}`), {
         text: text,
-        url: url,
-        date: Date.now(),
+        image: url,
       });
       console.log('Document written with ID: ', docRef.id);
       alert('Entry saved successfully!');
@@ -106,16 +79,15 @@ const Diary = ({ onChat, user }) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row p-6 bg-gradient-to-b from-purple-400 to-pink-400 h-full">
-      <div className="md:w-1/4 w-full mb-6 md:mb-0 md:mr-6 ">
-        <ChatPage className="border rounded-lg shadow-md bg-white p-4"
-          parsedData={parsedData} onParsedData={handleKeyPress} />
-      </div>
-      <div className="flex flex-col w-full bg-[#E4DAFF] p-6 border rounded-lg shadow-md">
+<>
+      <div className="h-full flex flex-col w-full bg-[#E4DAFF] p-6 border rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold mb-4 text-gray-800">Diary Entry</h2>
-          <ImageUpload ondownloadURL={handleImageUpload} name={data?.user?.name}/>
+          <div className="w-full border flex felx-col">
+          <ImageUpload ondownloadURL={handleImageUpload} name={name}/>
+          <Emotion onEmotion={handleEmotion}/>
+          </div>
         <textarea
-          className="w-full p-4 border rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none mt-4"
+          className="bg-white/0 w-full p-4 border rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none mt-4"
           rows="10"
           placeholder="Enter your thoughts here..."
           value={text}
@@ -129,7 +101,7 @@ const Diary = ({ onChat, user }) => {
           Save Diary
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

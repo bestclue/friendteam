@@ -55,18 +55,21 @@ const ImageUpload = ({ ondownloadURL, name }) => {
   };
 
   return (
-    <div className="mt-10 w-full">
+    <div className="w-1/2 mt-10">
       <form className="flex flex-col items-center">
         <label
-          className="w-full cursor-pointer flex flex-col items-center justify-center border-dashed border-2 border-purple-500 p-6 h-full rounded-lg text-gray-500 mb-4"
+          className="relative w-full cursor-pointer flex flex-col items-center justify-center border-dashed border-2 border-purple-500 rounded-lg text-gray-500 mb-4"
+          style={{ paddingBottom: '56.25%' }} // 16:9 aspect ratio
         >
-          <input type="file" onChange={handleImageChange} className="hidden" />
-          
+          <input type="file" onChange={handleImageChange} className="absolute inset-0 opacity-0 cursor-pointer" />
+
           {url ? (
-        <div className="mt-4">
-          <img src={url} alt="Uploaded" style={{ maxWidth: '100%' }} />
-        </div>
-      ): (<span className="text-gray-500">이미지 업로드</span>)}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <img src={url} className="rounded object-cover" alt="Uploaded" style={{ maxWidth: '100%', maxHeight: '100%' }} />
+            </div>
+          ) : (
+            <span className="absolute inset-0 flex items-center justify-center text-gray-500">이미지 업로드</span>
+          )}
         </label>
       </form>
     </div>
