@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
 import { useSession, signOut } from "next-auth/react";
 import Diary from "@/components/Diary";
 import ChatPage from '@/components/ChatPage';
@@ -13,6 +12,7 @@ const Main = () => {
   const handleSignOut = () => {
     signOut({ callbackUrl: "/login" });
   };
+
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
@@ -35,18 +35,9 @@ const Main = () => {
     if (!router) return;
   }, [router]);
 
-    const handleDateClick = (day) => {
-    // 달력에서 날짜를 클릭할 때 다이어리 페이지로 이동
-    router.push({
-      pathname: '/diary',
-      query: { selectedDate: day }, // 선택한 날짜를 쿼리 파라미터로 전달
-    });
-  };
-  
   if (status === "loading") {
     return <div>Loading...</div>;
-  }
-
+  }else {
   return (
     <div className="flex flex-col md:flex-row p-6 bg-gradient-to-b from-purple-400 to-pink-400 h-screen">
       <button onClick={handleSignOut}> signout</button>
@@ -61,11 +52,9 @@ const Main = () => {
         name={session?.user?.name}
         user={session?.user}
         ondiaryinput={handleParsed}
-// <Calendar user={session?.user} onDateClick={handleDateClick} />
       />
     </div>
   );
 };
-
+}
 export default Main;
-
