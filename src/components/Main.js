@@ -63,8 +63,9 @@ const Main = () => {
         ondiaryinput={handleParsed}
 // <Calendar user={session?.user} onDateClick={handleDateClick} />
       />
-
-
+    </div>
+  );
+};
 
 export default Main;
 
