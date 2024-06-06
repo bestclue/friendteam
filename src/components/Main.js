@@ -1,13 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSession, SessionProvider } from "next-auth/react";
-import Calendar from '@/components/Calendartmp';
+
+import { useSession, signOut } from "next-auth/react";
+import Diary from "@/components/Diary";
 import ChatPage from '@/components/ChatPage';
-import Diary from '@/components/Diary';
 import "../styles/globals.css";
 
 const Main = () => {
-  const router = useRouter();
+  const router = typeof window !== 'undefined' ? useRouter() : null;
+  const [parsedData, setParsedData] = useState(null);
+
+  const handleSignOut = () => {
+    signOut({ callbackUrl: "/login" });
+  };
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
@@ -18,29 +23,49 @@ const Main = () => {
   });
 
   useEffect(() => {
+    console.log("session data", session);
+  }, [session]);
+
+  const handleParsed = (data) => {
+    setParsedData(data);
+  }
+
+  useEffect(() => {
     // 클라이언트 사이드에서만 라우터 사용
     if (!router) return;
   }, [router]);
 
-  const handleDateClick = (day) => {
+    const handleDateClick = (day) => {
     // 달력에서 날짜를 클릭할 때 다이어리 페이지로 이동
     router.push({
       pathname: '/diary',
       query: { selectedDate: day }, // 선택한 날짜를 쿼리 파라미터로 전달
     });
   };
+  
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="main-container flex flex-row">
-      <div className="chat-container w-1/3 p-4">
-        <ChatPage user={session?.user} />
+    <div className="flex flex-col md:flex-row p-6 bg-gradient-to-b from-purple-400 to-pink-400 h-screen">
+      <button onClick={handleSignOut}> signout</button>
+      <div className="md:w-1/4 w-full mb-6 md:mb-0 md:mr-6">
+        <ChatPage
+          name={session?.user?.name}
+          className="border rounded-lg shadow-md bg-white p-4"
+          parsedData={parsedData}
+        />
       </div>
-      <div className="calendar-container w-2/3 p-4" >
-        {/* Calendar에 handleDateClick 함수 전달 */}
-        <Calendar user={session?.user} onDateClick={handleDateClick} />
-      </div>
+      <Diary
+        name={session?.user?.name}
+        user={session?.user}
+        ondiaryinput={handleParsed}
+// <Calendar user={session?.user} onDateClick={handleDateClick} />
+      />
     </div>
   );
 };
 
 export default Main;
+

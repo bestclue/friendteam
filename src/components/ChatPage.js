@@ -8,7 +8,7 @@ import { ChatInput } from "@/components/ChatInput";
 import { ChatLoader } from "@/components/ChatLoader";
 import { ChatBubble } from "@/components/ChatBubble";
 
-const ChatPage = ({ parsedData, onParsedData }) => {
+const ChatPage = ({ parsedData, onParsedData, name }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
@@ -51,7 +51,7 @@ const ChatPage = ({ parsedData, onParsedData }) => {
     setMessages([
       {
         role: "model",
-        parts: [{ text: "안녕하세요! 오늘은 무슨 일이 있었나요?" }],
+        parts: [{ text: `안녕하세요,${name}님!  오늘은 무슨 일이 있었나요?` }],
       },
     ]);
   };
@@ -64,11 +64,10 @@ const ChatPage = ({ parsedData, onParsedData }) => {
     handleReset();
   }, []);
 
-  useEffect(() => {
+  useEffect( () => {
     if (parsedData) {
-      setMessages((messages) => [...messages, parsedData]);
-    }
-  }, [parsedData]);
+      handleSend({ role: "user", parts: [{ text: parsedData }] });
+  }}, [parsedData]);
 
   return (
     <>
@@ -95,11 +94,7 @@ const ChatPage = ({ parsedData, onParsedData }) => {
           <div className="max-w-[800px] mx-auto mt-4 sm:mt-12">
             {/* AI 메시지 출력 */}
             <div className="mb-4 overflow-y-auto" style={{ maxHeight: "200px" }}>
-                {loading ? (
-                  <div className="my-1 sm:my-1.5">
-                    <ChatLoader />
-                 </div>
-                ):
+                {
                 (messages
                   .filter((message) => message.role === "model")
                   .slice(-1)
