@@ -37,8 +37,7 @@ const Main = () => {
 
   if (status === "loading") {
     return <div>Loading...</div>;
-  }
-
+  }else {
   return (
     <div className="flex flex-col md:flex-row p-6 bg-gradient-to-b from-purple-400 to-pink-400 h-screen">
       <button onClick={handleSignOut}> signout</button>
@@ -57,5 +56,5 @@ const Main = () => {
     </div>
   );
 };
-
+}
 export default Main;
