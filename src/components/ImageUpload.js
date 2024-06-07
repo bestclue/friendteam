@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { storage } from '../firebase';
+import VideoGenerator from './VideoGenerator';
 
 const ImageUpload = ({ ondownloadURL, name }) => {
   const [image, setImage] = useState(null);
@@ -114,8 +115,11 @@ const ImageUpload = ({ ondownloadURL, name }) => {
           ) : (
             <span className="absolute inset-0 flex items-center justify-center text-gray-500">이미지 업로드</span>
           )}
+
+
         </label>
       </form>
+      <VideoGenerator url={url}/>
     </div>
   );
 };

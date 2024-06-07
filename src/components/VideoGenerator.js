@@ -13,6 +13,8 @@ const VideoGenerator = ({ url }) => {
   const generateVideo = async () => {
     if (!apiKey || !url) {
       setStatus("API key and image URL are required");
+      console.log(apiKey);
+      console.log(url);
       return;
     }
 

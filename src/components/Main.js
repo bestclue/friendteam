@@ -5,6 +5,7 @@ import Diary from "@/components/Diary";
 import ChatPage from '@/components/ChatPage';
 import PoemDisplay from "@/components/PoemDisplay";
 import "../styles/globals.css";
+import Calendar from "./Calendartmp";
 
 const Main = () => {
   const router = typeof window !== 'undefined' ? useRouter() : null;
@@ -57,7 +58,7 @@ const Main = () => {
         />
       </div>
       {/* 조건부 렌더링으로 showPoem 상태가 true일 때 PoemDisplay를 보여줌 */}
-      {showPoem ? (
+      {/* {showPoem ? (
           <PoemDisplay entryId={entryId} />
         ) : (
           <Diary
@@ -66,7 +67,8 @@ const Main = () => {
             ondiaryinput={handleParsed}
             onSave={handleShowPoem} // 일기 저장 시 handleShowPoem 함수 호출
           />
-        )}
+        )} */}
+        <Calendar/>
     </div>
   );
 };
