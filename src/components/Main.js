@@ -3,14 +3,22 @@ import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import Diary from "@/components/Diary";
 import ChatPage from '@/components/ChatPage';
+import PoemDisplay from "@/components/PoemDisplay";
 import "../styles/globals.css";
 
 const Main = () => {
   const router = typeof window !== 'undefined' ? useRouter() : null;
   const [parsedData, setParsedData] = useState(null);
+  const [showPoem, setShowPoem] = useState(false); // showPoem 상태 추가
+  const [entryId, setEntryId] = useState(''); // entryId 상태 추가
 
   const handleSignOut = () => {
     signOut({ callbackUrl: "/login" });
+  };
+
+  const handleShowPoem = (entryId) => {
+    setShowPoem(true); // showPoem 상태를 true로 업데이트하여 PoemDisplay를 보이도록 설정
+    setEntryId(entryId); // entryId 상태를 업데이트
   };
 
   const { data: session, status } = useSession({
@@ -48,11 +56,17 @@ const Main = () => {
           parsedData={parsedData}
         />
       </div>
-      <Diary
-        name={session?.user?.name}
-        user={session?.user}
-        ondiaryinput={handleParsed}
-      />
+      {/* 조건부 렌더링으로 showPoem 상태가 true일 때 PoemDisplay를 보여줌 */}
+      {showPoem ? (
+          <PoemDisplay entryId={entryId} />
+        ) : (
+          <Diary
+            name={session?.user?.name}
+            user={session?.user}
+            ondiaryinput={handleParsed}
+            onSave={handleShowPoem} // 일기 저장 시 handleShowPoem 함수 호출
+          />
+        )}
     </div>
   );
 };
