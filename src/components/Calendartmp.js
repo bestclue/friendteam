@@ -4,7 +4,7 @@ import { format, addMonths, subMonths } from "date-fns";
 import { startOfMonth, endOfMonth, startOfWeek, endOfWeek } from "date-fns";
 import { isSameMonth, isSameDay, addDays } from "date-fns";
 import Modal from "react-modal";
-import Diary from "@/components/Diary"; // Diary 컴포넌트 import
+import Diary from "@/components/Diary";
 import "../styles/globals.css";
 
 const RenderHeader = ({
@@ -145,15 +145,12 @@ const RenderCells = ({
     </div>
   );
 };
-export default function Calendar({ feedback }) {
+
+const Calendartmp = ({ onDiaryOpen }) => { // 변경: 다이어리 열기 함수를 props로 전달
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [showDiary, setShowDiary] = useState(false); // 다이어리 표시 여부를 저장하는 상태
-
-  const onDateClick = (day) => {
-    setSelectedDate(day);
-    setShowDiary(true); // 다이어리 표시 상태로 변경
-  };
+  const [prevHover, setPrevHover] = useState(false);
+  const [nextHover, setNextHover] = useState(false);
 
   const prevMonth = () => {
     setCurrentMonth(subMonths(currentMonth, 1));
@@ -162,9 +159,6 @@ export default function Calendar({ feedback }) {
   const nextMonth = () => {
     setCurrentMonth(addMonths(currentMonth, 1));
   };
-  
-  const [prevHover, setPrevHover] = useState(false);
-  const [nextHover, setNextHover] = useState(false);
   
   const isPrevHovering = () => {
     setPrevHover(true);
@@ -181,36 +175,37 @@ export default function Calendar({ feedback }) {
   const notNextHovering = () => {
     setNextHover(false);
   };
-  
+
   useEffect(() => {
     Modal.setAppElement("body");
   }, []);
-  
+
+  const onDateClick = (day) => {
+    setSelectedDate(day);
+    onDiaryOpen(); // 변경: 다이어리 열기 함수 호출
+  };
+
   return (
     <div className="w-[95%] lg:w-4/5 h-full flex flex-col justify-center items-center rounded-3xl bg-gray-lightest text-gray-darkest shadow-xl">
-      {!showDiary && ( // 다이어리가 표시되지 않았을 때만 캘린더를 렌더링합니다.
-        <>
-          <RenderHeader
-            currentMonth={currentMonth}
-            prevMonth={prevMonth}
-            nextMonth={nextMonth}
-            prevHover={prevHover}
-            nextHover={nextHover}
-            isPrevHovering={isPrevHovering}
-            notPrevHovering={notPrevHovering}
-            isNextHovering={isNextHovering}
-            notNextHovering={notNextHovering}
-          />
-          <RenderDays />
-          <RenderCells
-            currentMonth={currentMonth}
-            selectedDate={selectedDate}
-            onDateClick={onDateClick}
-            feedback={feedback}
-          />
-        </>
-      )}
-      {showDiary && <Diary />} {/* 다이어리가 표시되면 다이어리를 렌더링합니다. */}
-    </div>
-  );
-}
+<RenderHeader
+     currentMonth={currentMonth}
+     prevMonth={prevMonth}
+     nextMonth={nextMonth}
+     prevHover={prevHover}
+     nextHover={nextHover}
+     isPrevHovering={isPrevHovering}
+     notPrevHovering={notPrevHovering}
+     isNextHovering={isNextHovering}
+     notNextHovering={notNextHovering}
+   />
+<RenderDays />
+<RenderCells
+     currentMonth={currentMonth}
+     selectedDate={selectedDate}
+     onDateClick={onDateClick}
+   />
+</div>
+);
+};
+
+export default Calendartmp;
