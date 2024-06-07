@@ -11,6 +11,7 @@ import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import ImageUpload from '@/components/ImageUpload';
 import Emotion from "@/components/Emotion";
 import PoemDisplay from "@/components/PoemDisplay";
+import VideoGenerator from './VideoGenerator';
 
 const Diary = ({ onChat, user, onSave, ondiaryinput, name}) => {
   const [url, setUrl] = useState('');
