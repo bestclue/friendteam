@@ -11,6 +11,7 @@ import { ChatBubble } from "@/components/ChatBubble";
 const ChatPage = ({ parsedData, onParsedData, name }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [emotion, setEmotion] = useState("기본");
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -22,7 +23,7 @@ const ChatPage = ({ parsedData, onParsedData, name }) => {
     setMessages(updatedMessages);
     setLoading(true);
 
-    const response = await fetch("/api/chat", {
+    const chatresponse = await fetch("/api/chat", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,19 +33,42 @@ const ChatPage = ({ parsedData, onParsedData, name }) => {
       }),
     });
 
-    if (!response.ok) {
+    if (!chatresponse.ok) {
       setLoading(false);
-      throw new Error(response.statusText);
+      throw new Error(chatresponse.statusText);
     }
 
-    const result = await response.json();
+    const chatresult = await chatresponse.json();
 
-    if (!result) {
+    if (!chatresult) {
       return;
     }
 
-    setLoading(false);
-    setMessages((messages) => [...messages, result]);
+    const emotionResponse = await fetch("/api/detect-emotion", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ messages: updatedMessages.slice(1) }),
+    });
+  
+    if (!emotionResponse.ok) {
+      throw new Error(emotionResponse.statusText);
+    }
+  
+    const emotionResult = await emotionResponse.json();
+    console.log("emotionResult:", emotionResult);
+    const emotion = emotionResult.emotion;
+    console.log("Selected Emotion:", emotion);
+
+    try {
+      setLoading(false);
+      setMessages((messages) => [...messages, chatresult]);
+      setEmotion(emotion);
+    } catch (error) {
+      console.error("Error detecting emotion:", error);
+      setLoading(false);
+    }
   };
 
   const handleReset = () => {
@@ -54,6 +78,7 @@ const ChatPage = ({ parsedData, onParsedData, name }) => {
         parts: [{ text: `안녕하세요,${name}님!  오늘은 무슨 일이 있었나요?` }],
       },
     ]);
+    setEmotion("기본");
   };
 
   useEffect(() => {
@@ -108,7 +133,13 @@ const ChatPage = ({ parsedData, onParsedData, name }) => {
 
              {/* 이미지 출력 */}
              <div className="mb-4">
-               <img src="감성일기 곰돌이 기본.png" alt="감성일기 곰돌이 기본" width="700" height="600" style={{ marginTop: '150px' }} ></img>
+             <img
+                src={`감성일기 곰돌이 ${emotion}.png`}
+                alt={`감성일기 곰돌이 ${emotion}`}
+                width="700"
+                height="600"
+                style={{ marginTop: "150px" }}
+              />
             </div>
 
             {/* 사용자 메시지 출력

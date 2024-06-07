@@ -6,20 +6,19 @@ import ChatInput from '@/components/ChatInput';
 
 import { db, storage } from "@/firebase";
 
-import { collection, addDoc, setDoc } from "firebase/firestore";
+import { doc, collection, addDoc, setDoc } from "firebase/firestore";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import ImageUpload from '@/components/ImageUpload';
 import Emotion from "@/components/Emotion";
+import PoemDisplay from "@/components/PoemDisplay";
 
-const Diary = ({ onChat, user, ondiaryinput, name}) => {
+const Diary = ({ onChat, user, onSave, ondiaryinput, name}) => {
   const [url, setUrl] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
   const [text, setText] = useState('');
   const [emotion, setEmotion] = useState('');
   const [currentUser, setCurrentUser] = useState(null); // 사용자 상태 추가
   const [chatHistory, setChatHistory] = useState([]);
-
-
 
   const handleImageUpload = (url) => {
     if (!url) {
@@ -65,13 +64,21 @@ const Diary = ({ onChat, user, ondiaryinput, name}) => {
     console.log('저장할 이미지 URL:', url);  // 이미지 URL 확인
   
     try {
+      // 현재 시간을 얻어와서 entryId로 사용
+      const currentTime = new Date();
+      const newEntryId = `${name}_${currentTime.toISOString()}`;
       // 텍스트와 이미지 URL을 Firestore에 저장
-      const docRef = await setDoc(doc(db, 'diaryEntries',`${name}_${new Date().toISOString()}`), {
+      const docRef = await setDoc(doc(db, 'diaryEntries', newEntryId), {
         text: text,
         image: url,
       });
-      console.log('Document written with ID: ', docRef.id);
+      // 새로운 문서를 추가한 경우에만 문서 ID를 출력
+      if (docRef) {
+        console.log('Document written with ID: ', docRef.id);
+      }
+      console.log('Entry saved successfully!');
       alert('Entry saved successfully!');
+      onSave(newEntryId);
     } catch (error) {
       console.error('Error adding document: ', error);
       alert('Failed to save entry. Please try again.');
