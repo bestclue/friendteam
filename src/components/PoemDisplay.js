@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 
 const PoemDisplay = ({ entryId }) => {
@@ -43,9 +43,11 @@ const PoemDisplay = ({ entryId }) => {
       }
 
       const poemText = result.parts[0]?.text;
+      const formattedPoem = poemText.replace(/\n/g, '<br>');
+
       console.log('생성된 시:', poemText);
 
-      setPoem(poemText);
+      setPoem(formattedPoem);
     } catch (error) {
       console.error("Error fetching or processing data: ", error);
     } finally {
@@ -55,15 +57,16 @@ const PoemDisplay = ({ entryId }) => {
 
   useEffect(() => {
     console.log('useEffect 호출');
-    fetchData(); // 컴포넌트가 마운트될 때 fetchData 호출
+    if(entryId) {
+    fetchData();
+    }
   }, [entryId]);
 
   return (
     <div className="h-full flex flex-col w-full bg-purple-100 p-6 border rounded-lg shadow-md">
       <h2 className="text-2xl font-semibold mb-4 text-gray-800">Poem</h2>
-      <div className="bg-white/0 w-full p-4 border rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none mt-4">
-          {loading && <p>Loading...</p>}
-          {!loading && poem && <p>{poem}</p>}
+      <div className="bg-white/0 w-full p-4 border rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none mt-4"
+      dangerouslySetInnerHTML={{ __html: poem }}>
       </div>
     </div>
   );
