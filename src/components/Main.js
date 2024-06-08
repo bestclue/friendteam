@@ -6,21 +6,16 @@ import ChatPage from "@/components/ChatPage";
 import PoemDisplay from "@/components/PoemDisplay";
 import "../styles/globals.css";
 import Calendartmp from "./Calendartmp";
+import Emotion from "@/components/Emotion";
 
 const Main = () => {
   const router = useRouter();
   const [parsedData, setParsedData] = useState(null);
   const [showPoem, setShowPoem] = useState(false);
-  const [entryId, setEntryId] = useState('');
   const [showDiary, setShowDiary] = useState(false); // 다이어리 표시 여부 상태 추가
 
   const handleSignOut = () => {
     signOut({ callbackUrl: "/login" });
-  };
-
-  const handleShowPoem = (entryId) => {
-    setShowPoem(true);
-    setEntryId(entryId);
   };
 
   const handleParsed = (data) => {
@@ -56,35 +51,52 @@ const Main = () => {
     return <div>Loading...</div>;
   } else {
     return (
-      <div className="flex flex-col md:flex-row p-6 bg-gradient-to-b from-purple-400 to-pink-400 h-screen">
-        <button onClick={handleSignOut}>signout</button>
-        <div className="md:w-1/4 w-full mb-6 md:mb-0 md:mr-6">
-          <ChatPage
-            name={session?.user?.name}
-            className="border rounded-lg shadow-md bg-white p-4"
-            parsedData={parsedData}
-          />
+      <div className="flex flex-col h-screen">
+        <header className="bg-white shadow-md p-4 fixed top-0 left-0 right-0 z-10 h-12">
+          <div className="container mx-auto flex justify-between items-center">
+            <h1 className="text-xl font-bold">Your App Name</h1>
+            <button onClick={handleSignOut} className="text-red-500">Sign Out</button>
+          </div>
+        </header>
+        <div className="flex flex-col md:flex-row p-6 bg-gradient-to-b from-purple-400 to-pink-400 flex-grow">
+          <div className="md:w-1/4 w-full mb-6 md:mb-0 md:mr-6">
+            <ChatPage
+              name={session?.user?.name}
+              className="border rounded-lg shadow-md bg-white p-4"
+              parsedData={parsedData}
+            />
+          </div>
+          <div className="md:w-3/4 w-full mr-6 mb-6 md:mb-0">
+            <div className="mt-6 mb-6">
+              <Emotion />
+            </div>
+          {/* 조건부 렌더링으로 showPoem 상태가 true일 때 PoemDisplay를 보여줌 */}
+          {/* {showPoem ? (
+            <PoemDisplay entryId={entryId} />
+          ) : (
+            <Diary
+              name={session?.user?.name}
+              user={session?.user}
+              ondiaryinput={handleParsed}
+              onSave={handleShowPoem}
+            />
+          )} */}
+          {/* Calendar 컴포넌트 추가 및 다이어리 표시 여부에 따른 조건부 렌더링 */}
+          {showDiary ? (
+            <Diary
+              name={session?.user?.name}
+              user={session?.user}
+              ondiaryinput={handleParsed}
+              onClose={handleDiaryClose}
+              />
+          ) : (
+            <Calendartmp onDiaryOpen={handleDiaryOpen} />
+          )}
+          </div>
         </div>
-        {/* 조건부 렌더링으로 showPoem 상태가 true일 때 PoemDisplay를 보여줌 */}
-        {/* {showPoem ? (
-          <PoemDisplay entryId={entryId} />
-        ) : (
-          <Diary
-            name={session?.user?.name}
-            user={session?.user}
-            ondiaryinput={handleParsed}
-            onSave={handleShowPoem}
-          />
-        )} */}
-        {/* Calendar 컴포넌트 추가 및 다이어리 표시 여부에 따른 조건부 렌더링 */}
-        {showDiary ? (
-          <Diary onClose={handleDiaryClose} />
-        ) : (
-          <Calendartmp onDiaryOpen={handleDiaryOpen} />
-        )}
       </div>
     );
-  }
+  }    
 };
 
 export default Main;

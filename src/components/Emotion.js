@@ -12,7 +12,7 @@ const Emotion = ({onEmotion}) => {
   };
 
   return (
-    <div className="w-1/5 grid grid-cols-2 gap-4 p-4">
+    <div className="w-full flex gap-4 p-4">
       {emotions.map((em, index) => (
         <button 
           key={index} 
