@@ -6,6 +6,18 @@ const PoemDisplay = ({ entryId }) => {
   const [loading, setLoading] = useState(true);
   const [poem, setPoem] = useState('');
 
+  const savePoem = async (entryId, formattedPoem) => {
+    try {
+      const entryRef = doc(db, 'diaryEntries', entryId);
+      await updateDoc(entryRef, {
+        poem: formattedPoem
+      });
+      console.log('Poem saved to Firestore');
+    } catch (error) {
+      console.error('Error saving poem to Firestore:', error);
+    }
+  };  
+
   const fetchData = async () => {
     console.log('fetchData 함수 호출');
     setLoading(true);
@@ -46,7 +58,7 @@ const PoemDisplay = ({ entryId }) => {
       const formattedPoem = poemText.replace(/\n/g, '<br>');
 
       console.log('생성된 시:', poemText);
-
+      savePoem(entryId, formattedPoem);
       setPoem(formattedPoem);
     } catch (error) {
       console.error("Error fetching or processing data: ", error);

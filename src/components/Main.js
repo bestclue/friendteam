@@ -67,9 +67,6 @@ const Main = () => {
             />
           </div>
           <div className="md:w-3/4 w-full mr-6 mb-6 md:mb-0">
-            <div className="mt-6 mb-6">
-              <Emotion />
-            </div>
           {/* 조건부 렌더링으로 showPoem 상태가 true일 때 PoemDisplay를 보여줌 */}
           {/* {showPoem ? (
             <PoemDisplay entryId={entryId} />
@@ -90,7 +87,12 @@ const Main = () => {
               onClose={handleDiaryClose}
               />
           ) : (
+            <>
+            <div className="mt-6 mb-6">
+            <Emotion />
+            </div>
             <Calendartmp onDiaryOpen={handleDiaryOpen} />
+            </>
           )}
           </div>
         </div>
