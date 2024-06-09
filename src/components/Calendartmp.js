@@ -90,6 +90,7 @@ const RenderCells = ({
   ndata,
   onDiaryOpen,
   dates,
+  filteredDates
 }) => {
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(monthStart);
@@ -107,7 +108,6 @@ const RenderCells = ({
       formattedDate = format(day, "d");
     
       const cloneDay = parseInt(new Date(day.getTime() + 86400000).toISOString().slice(0,10).replace(/-/g,''));
-      
       days.push(
         <div className="w-1/6 h-5/6 flex flex-col justify-start items-center" key={day}>
           <div
@@ -122,6 +122,8 @@ const RenderCells = ({
                 ? "bg-blue-500 text-gray-100"
                 : dates && dates.includes(cloneDay) // dates 배열이 존재할 때만 조건을 확인
                 ? "bg-green-500 text-white"
+                : filteredDates && filteredDates.includes(cloneDay) // 추가: 필터링된 날짜에 해당하는 경우
+                ? "bg-red-500 text-white" // 필터링된 날짜의 색상을 변경할 수 있습니다.
                 : "valid bg-gray-100 border-[1px] border-gray-300 hover:bg-blue-300 hover:border-[1px] hover:border-blue-700 hover:text-gray-100"
             }`}
             key={day}
@@ -201,15 +203,16 @@ const Calendartmp = ({ onDiaryOpen, name, onMonthData, dates }) => { // 변경: 
   const [prevHover, setPrevHover] = useState(false);
   const [nextHover, setNextHover] = useState(false);
   const [monthdata, setMonthData] = useState([]);
-  const [filtered, setFiltered] = useState();
   const [ndata, setNdata] = useState(null);
+  const [filteredDates, setFilteredDates] = useState([]);
+
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const handleEmotion = (emo) => {
-    setFiltered(monthdata.filter(item => item.emotion === emo));
-  }
-
+    const filteredData = monthdata.filter(item => item.emotion === emo);
+    setFilteredDates(filteredData.map(item => item.date)); // 해당 감정에 해당하는 일기들의 날짜 배열 업데이트
+  };  
 
   const prevMonth = () => {
     setCurrentMonth(subMonths(currentMonth, 1));
@@ -303,6 +306,7 @@ const Calendartmp = ({ onDiaryOpen, name, onMonthData, dates }) => { // 변경: 
         ndata={ndata}
         onDiaryOpen={onDiaryOpen}
         dates={dates}
+        filteredDates={filteredDates}
       />
     </div>
   );

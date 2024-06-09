@@ -61,7 +61,7 @@ const handleSend = async (message) => {
     onSearchDates(foundDates);
     if (foundDates) {
       // 찾은 모든 날짜를 AI 메시지로 렌더링합니다.
-      const dateMessages = foundDates.map(date => ({ role: "model", parts: [{ text: `사용자가 '${messageText}'를 썼던 날짜는 ${date} 입니다.` }] }));
+      const dateMessages = foundDates.map(date => ({ role: "model", parts: [{ text: `사용자가 '${messageText}'를 썼던 날짜는 ${foundDates} 입니다.` }] }));
       setMessages(messages => [...messages, ...dateMessages]);
     } else {
       // 날짜를 찾지 못한 경우 메시지를 렌더링합니다.
