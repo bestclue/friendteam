@@ -8,13 +8,14 @@ import Emotion from "@/components/Emotion";
 import PoemDisplay from "@/components/PoemDisplay";
 import VideoGenerator from './VideoGenerator';
 
-const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data }) => {
+const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotionSelect }) => {
   const [url, setUrl] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
   const [text, setText] = useState('');
   const [emotion, setEmotion] = useState('');
   const [entryId, setEntryId] = useState('');
   const [save, setSave] = useState(false);
+  const [sentenceCount, setSentenceCount] = useState('0');
 
   useEffect(() => {
     if (data) {
@@ -36,13 +37,34 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data }) => {
   };
 
   const handleTextChange = (e) => {
-    setText(e.target.value);
-  };
+    const newText = e.target.value;
+    setText(newText);
+    
+    // Count the number of non-consecutive periods
+    const periods = newText.split('').reduce((acc, char, idx) => {
+      if (char === '.' && newText[idx - 1] !== '.') {
+        return acc + 1;
+      }
+      return acc;
+    }, 0);
+
+    if (periods > sentenceCount) {
+      setSentenceCount(periods);
+      //문장 4개 쓰면 데이터 보내기
+      if (periods % 4 === 0) {
+        const processedText = newText;
+        ondiaryinput(processedText);
+        console.log("newText:", processedText);
+      }
+    }
+};
 
   const handleEmotion = (emotion) => {
     setEmotion(emotion);
+    onEmotionSelect(emotion);
   };
 
+  {/*
   const handleKeyPress = async (e) => {
     if (e.key === 'Enter') {
       const lastNewlineIndex = text.lastIndexOf('\n');
@@ -50,9 +72,9 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data }) => {
       ondiaryinput(recentText);
     }
   };
+  */}
 
   const handleSaveEntry = async () => {
-    setSave(true);
     if (!name) {
       alert('Please log in before saving.');
       return;
@@ -83,6 +105,7 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data }) => {
       }
 
       alert('Entry saved successfully!');
+      setSave(true);
     } catch (error) {
       console.error('Error saving document: ', error);
       alert('Failed to save entry. Please try again.');
@@ -129,7 +152,6 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data }) => {
           placeholder="Enter your thoughts here..."
           value={text}
           onChange={handleTextChange}
-          onKeyDown={handleKeyPress}
         ></textarea>
       </div>
       <div className="flex justify-end mt-4">

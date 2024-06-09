@@ -8,7 +8,7 @@ import { ChatInput } from "@/components/ChatInput";
 import { ChatLoader } from "@/components/ChatLoader";
 import { ChatBubble } from "@/components/ChatBubble";
 
-const ChatPage = ({ parsedData, onParsedData, name }) => {
+const ChatPage = ({ parsedData, onParsedData, name, selectedEmotion }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [emotion, setEmotion] = useState("기본");
@@ -93,6 +93,20 @@ const ChatPage = ({ parsedData, onParsedData, name }) => {
     if (parsedData) {
       handleSend({ role: "user", parts: [{ text: parsedData }] });
   }}, [parsedData]);
+
+  const removeEmoji = (str) => {
+    return str.replace(/[\uD800-\uDFFF]./g, '');
+  };
+
+  const handleEmotionSelect = (selectedEmotion) => {
+    const plainEmotion = removeEmoji(selectedEmotion);
+    setEmotion(plainEmotion);
+  };
+
+  useEffect(() => {
+    if (selectedEmotion) {
+    handleEmotionSelect(selectedEmotion);
+  }}, [selectedEmotion]);
 
   return (
     <>
