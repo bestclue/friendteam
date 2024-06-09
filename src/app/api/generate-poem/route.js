@@ -10,7 +10,8 @@ const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY);
 const systemInstruction =
   "너는 시를 작성하는 시인이다."+
   "일기 내용을 기반으로 오직 시를 만들어줘."+
-  "시는 감성적이고 아름답게 작성해줘.";
+  "시는 감성적이고 아름답게 작성해줘."+
+  "시를 짧게 작성해줘.";
 
 export async function POST(req) {
   const model = genAI.getGenerativeModel({

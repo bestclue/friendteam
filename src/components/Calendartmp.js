@@ -89,6 +89,7 @@ const RenderCells = ({
   setModalIsOpen,
   ndata,
   onDiaryOpen,
+  dates,
 }) => {
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(monthStart);
@@ -106,6 +107,7 @@ const RenderCells = ({
       formattedDate = format(day, "d");
     
       const cloneDay = parseInt(new Date(day.getTime() + 86400000).toISOString().slice(0,10).replace(/-/g,''));
+      
       days.push(
         <div className="w-1/6 h-5/6 flex flex-col justify-start items-center" key={day}>
           <div
@@ -118,6 +120,8 @@ const RenderCells = ({
                 ? "not-valid "
                 : isSameDay(day, selectedDate)
                 ? "bg-blue-500 text-gray-100"
+                : dates && dates.includes(cloneDay) // dates 배열이 존재할 때만 조건을 확인
+                ? "bg-green-500 text-white"
                 : "valid bg-gray-100 border-[1px] border-gray-300 hover:bg-blue-500 hover:border-[1px] hover:border-blue-700 hover:text-gray-100"
             }`}
             key={day}
@@ -191,7 +195,7 @@ const RenderCells = ({
   );
 };
 
-const Calendartmp = ({ onDiaryOpen, name }) => { // 변경: 다이어리 열기 함수를 props로 전달
+const Calendartmp = ({ onDiaryOpen, name, onMonthData, dates }) => { // 변경: 다이어리 열기 함수를 props로 전달
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [prevHover, setPrevHover] = useState(false);
@@ -236,7 +240,6 @@ const Calendartmp = ({ onDiaryOpen, name }) => { // 변경: 다이어리 열기 
     fetchData();
   }, [currentMonth]);
 
-
   const onDateClick = (day) => {
     setSelectedDate(day);
     const ndata = monthdata.find(item => item.date === day);
@@ -268,6 +271,7 @@ const Calendartmp = ({ onDiaryOpen, name }) => { // 변경: 다이어리 열기 
     });
   
     setMonthData(data);
+    onMonthData(data);
   };
   
 
@@ -298,6 +302,7 @@ const Calendartmp = ({ onDiaryOpen, name }) => { // 변경: 다이어리 열기 
         closeModal={closeModal}
         ndata={ndata}
         onDiaryOpen={onDiaryOpen}
+        dates={dates}
       />
     </div>
   );
