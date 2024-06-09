@@ -67,7 +67,7 @@ const RenderDays = () => {
     <div className="days w-full h-fit p-1 px-4 row flex flex-row justify-between items-center ">
       {days.map((day, index) => (
         <div
-          className={`col w-1/7 h-full flex flex-col pb-[10px] justify-end items-center px-1 ${
+          className={`col w-1/6 h-full flex flex-col pb-[10px] justify-end items-center px-1 ${
             index === 0 ? "text-orange-500" : index === 6 ? "text-blue-500" : "text-gray-900"
           }  font-bold border-gray-900 border-b-[1px]`}
           key={index}
@@ -115,14 +115,14 @@ const RenderCells = ({
               !isSameMonth(day, monthStart)
                 ? "disabled text-gray-500 border-[1px] border-gray-300"
                 : isSameDay(day, nowDate)
-                ? "selected bg-orange-500 text-gray-100 font-bold border-[1px] border-orange-700 hover:bg-blue-500  hover:border-[1px] hover:border-blue-700"
+                ? "selected bg-purple-500 text-gray-100 font-bold border-[1px] border-purple-700 hover:bg-blue-300  hover:border-[1px] hover:border-blue-700"
                 : format(currentMonth, "M") !== format(day, "M")
                 ? "not-valid "
                 : isSameDay(day, selectedDate)
                 ? "bg-blue-500 text-gray-100"
                 : dates && dates.includes(cloneDay) // dates 배열이 존재할 때만 조건을 확인
                 ? "bg-green-500 text-white"
-                : "valid bg-gray-100 border-[1px] border-gray-300 hover:bg-blue-500 hover:border-[1px] hover:border-blue-700 hover:text-gray-100"
+                : "valid bg-gray-100 border-[1px] border-gray-300 hover:bg-blue-300 hover:border-[1px] hover:border-blue-700 hover:text-gray-100"
             }`}
             key={day}
             onClick={() => onDateClick(cloneDay)}
@@ -277,7 +277,7 @@ const Calendartmp = ({ onDiaryOpen, name, onMonthData, dates }) => { // 변경: 
 
 
   return (
-    <div className="w-[95%] lg:w-4/5 h-full flex flex-col justify-center items-center rounded-3xl bg-gray-lightest text-gray-darkest shadow-xl">
+    <div className="w-[95%] lg:w-4/5 h-full flex flex-col justify-center items-center rounded-3xl bg-purple-200 text-gray-darkest shadow-xl">
       <Emotion 
         onEmotion={handleEmotion}
       />

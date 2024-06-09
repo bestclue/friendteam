@@ -73,9 +73,12 @@ const Main = () => {
   } else {
     return (
       <div className="flex flex-col h-screen">
-        <header className="bg-white shadow-md p-4 fixed top-0 left-0 right-0 z-10 h-12">
+        <header className="bg-purple-300 shadow-md p-4 fixed top-0 left-0 right-0 z-10 h-12">
           <div className="container mx-auto flex justify-between items-center">
-            <h1 className="text-xl font-bold cursor-pointer" onClick={handleDiaryClose}>감성일기</h1>
+          <h1 className="text-xl font-bold cursor-pointer" onClick={handleDiaryClose} style={{ display: 'flex', alignItems: 'center' }}>
+  <img src="/감성일기 곰돌이.png" alt="감성일기 곰돌이" width="30" height="30" style={{ marginRight: '10px' }}/>
+  감성일기
+</h1>
             <button onClick={handleSignOut} className="text-red-500">로그아웃</button>
           </div>
         </header>
