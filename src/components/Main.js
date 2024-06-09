@@ -58,15 +58,15 @@ const Main = () => {
     if (!router) return;
   }, [router]);
 
-    // Calendartmp 컴포넌트에서 monthdata를 전달받는 함수
-    const handleMonthData = (data) => {
-      setMonthData(data);
-    };
+  // Calendartmp 컴포넌트에서 monthdata를 전달받는 함수
+  const handleMonthData = (data) => {
+    setMonthData(data);
+  };
 
-    const handleSearchDates = (dates) => {
-      setSearchedDates(dates);
-      console.log("Searched Dates:", dates); // dates를 콘솔에 출력
-    };
+  const handleSearchDates = (dates) => {
+    setSearchedDates(dates);
+    console.log("Searched Dates:", dates); // dates를 콘솔에 출력
+  };
 
   if (status === "loading") {
     return <div>Loading...</div>;
@@ -75,7 +75,7 @@ const Main = () => {
       <div className="flex flex-col h-screen">
         <header className="bg-white shadow-md p-4 fixed top-0 left-0 right-0 z-10 h-12">
           <div className="container mx-auto flex justify-between items-center">
-            <h1 className="text-xl font-bold">감성일기</h1>
+            <h1 className="text-xl font-bold cursor-pointer" onClick={handleDiaryClose}>감성일기</h1>
             <button onClick={handleSignOut} className="text-red-500">로그아웃</button>
           </div>
         </header>
@@ -91,43 +91,43 @@ const Main = () => {
             />
           </div>
           <div className="md:w-3/4 w-full mr-6 mb-6 md:mb-0">
-          {/* 조건부 렌더링으로 showPoem 상태가 true일 때 PoemDisplay를 보여줌 */}
-          {/* {showPoem ? (
-            <PoemDisplay entryId={entryId} />
-          ) : (
-            <Diary
-              name={session?.user?.name}
-              user={session?.user}
-              ondiaryinput={handleParsed}
-              onSave={handleShowPoem}
-            />
-          )} */}
-          {/* Calendar 컴포넌트 추가 및 다이어리 표시 여부에 따른 조건부 렌더링 */}
-          {showDiary ? (
-            <Diary
-              name={session?.user?.name}
-              user={session?.user}
-              ondiaryinput={handleParsed}
-              onClose={handleDiaryClose}
-              date = {date}
-              data = {data}
-              onEmotionSelect={handleEmotionSelect}
+            {/* 조건부 렌더링으로 showPoem 상태가 true일 때 PoemDisplay를 보여줌 */}
+            {/* {showPoem ? (
+              <PoemDisplay entryId={entryId} />
+            ) : (
+              <Diary
+                name={session?.user?.name}
+                user={session?.user}
+                ondiaryinput={handleParsed}
+                onSave={handleShowPoem}
               />
-          ) : (
-            <>
-            <Calendartmp
-              onDiaryOpen={handleDiaryOpen}
-              name={session?.user?.name}
-              onMonthData={handleMonthData}
-              dates={searchedDates}
+            )} */}
+            {/* Calendar 컴포넌트 추가 및 다이어리 표시 여부에 따른 조건부 렌더링 */}
+            {showDiary ? (
+              <Diary
+                name={session?.user?.name}
+                user={session?.user}
+                ondiaryinput={handleParsed}
+                onClose={handleDiaryClose}
+                date={date}
+                data={data}
+                onEmotionSelect={handleEmotionSelect}
               />
-            </>
-          )}
+            ) : (
+              <>
+                <Calendartmp
+                  onDiaryOpen={handleDiaryOpen}
+                  name={session?.user?.name}
+                  onMonthData={handleMonthData}
+                  dates={searchedDates}
+                />
+              </>
+            )}
           </div>
         </div>
       </div>
     );
-  }    
+  }
 };
 
 export default Main;
