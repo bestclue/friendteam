@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import { format, addMonths, subMonths } from "date-fns";
@@ -106,24 +107,30 @@ const RenderCells = ({
   while (day <= endDate) {
     for (let i = 0; i < 7; i++) {
       formattedDate = format(day, "d");
-    
+
       const cloneDay = parseInt(new Date(day.getTime() + 86400000).toISOString().slice(0,10).replace(/-/g,''));
+      const isDateInDates = dates && dates.includes(cloneDay);
+      const isDateInFilteredDates = filteredDates && filteredDates.includes(cloneDay);
+      const isDateInBoth = isDateInDates && isDateInFilteredDates;
+      
       days.push(
         <div className="w-1/6 h-5/6 flex flex-col justify-start items-center" key={day}>
           <div
-            className={`col w-16 h-16  justify-center text-center grid grid-rows-5 items-center px-1 rounded-full cell ${
+            className={`col w-16 h-16 justify-center text-center grid grid-rows-5 items-center px-1 rounded-full cell ${
               !isSameMonth(day, monthStart)
                 ? "disabled text-gray-500 border-[1px] border-gray-300"
                 : isSameDay(day, nowDate)
-                ? "selected bg-purple-500 text-gray-100 font-bold border-[1px] border-purple-700 hover:bg-blue-300  hover:border-[1px] hover:border-blue-700"
+                ? "selected bg-purple-500 text-gray-100 font-bold border-[1px] border-purple-700 hover:bg-blue-300 hover:border-[1px] hover:border-blue-700"
                 : format(currentMonth, "M") !== format(day, "M")
-                ? "not-valid "
+                ? "not-valid"
                 : isSameDay(day, selectedDate)
                 ? "bg-blue-500 text-gray-100"
-                : dates && dates.includes(cloneDay) // dates 배열이 존재할 때만 조건을 확인
-                ? "bg-green-500 text-white"
-                : filteredDates && filteredDates.includes(cloneDay) // 추가: 필터링된 날짜에 해당하는 경우
-                ? "bg-red-500 text-white" // 필터링된 날짜의 색상을 변경할 수 있습니다.
+                : isDateInBoth
+                ? "bg-orange-400 text-white"
+                : isDateInDates
+                ? "bg-yellow-200 text-white"
+                : isDateInFilteredDates
+                ? "bg-red-300 text-white"
                 : "valid bg-gray-100 border-[1px] border-gray-300 hover:bg-blue-300 hover:border-[1px] hover:border-blue-700 hover:text-gray-100"
             }`}
             key={day}
@@ -162,7 +169,7 @@ const RenderCells = ({
       {rows}
       <Modal
         isOpen={modalIsOpen}
-        className="z-10 flex flex-col  justify-start items-center bg-gray-lightest border-3 border-gray"
+        className="z-10 flex flex-col justify-start items-center bg-gray-lightest border-3 border-gray"
         contentLabel="Modal for calendar"
         onRequestClose={() => setModalIsOpen(false)}
         shouldCloseOnOverlayClick={false}
@@ -176,12 +183,12 @@ const RenderCells = ({
           className="flex w-full px-6 flex-col justify-start items-start overflow-y-scroll pb-5 no-scrollbar"
         >
           <div className={`mt-3 w-full`}>
-          <button onClick={closeModal} >닫기</button>
-            {ndata?
-            <>
+            <button onClick={closeModal}>닫기</button>
+            {ndata ? (
+              <>
                 <span>{`내용: ${ndata.text}`}</span>
                 <span>{`감정: ${ndata.emotion}`}</span>
-                <img src={ndata.image}/>
+                <img src={ndata.image} />
                 <button
                   onClick={() => onDiaryOpen(ndata.date, ndata[0])}
                   className="mt-4 p-2 bg-blue-500 text-white rounded"
@@ -189,14 +196,15 @@ const RenderCells = ({
                   전체보기
                 </button>
               </>
-              :<></>}
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </Modal>
     </div>
   );
 };
-
 const Calendartmp = ({ onDiaryOpen, name, onMonthData, dates }) => { // 변경: 다이어리 열기 함수를 props로 전달
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
