@@ -1,13 +1,20 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { storage } from '../firebase';
 import VideoGenerator from './VideoGenerator';
 
-const ImageUpload = ({ ondownloadURL, name }) => {
+
+
+
+const ImageUpload = ({ ondownloadURL, name, date, u }) => {
   const [image, setImage] = useState(null);
-  const [url, setUrl] = useState('');
+  const [url, setUrl] = useState(u);
+
+  useEffect(() => {
+    setUrl(u);
+  }, [u]);
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
@@ -17,7 +24,7 @@ const ImageUpload = ({ ondownloadURL, name }) => {
       img.onload = async () => {
         if (img.width !== 1024 || img.height !== 576) {
           if (window.confirm('이미지 크기가 1024*576이 아닙니다. 수정해드릴까요?')) {
-            const resizedImage = await resizeImage(img, 1024, 576, file.name);
+            const resizedImage = await resizeImage(img, 1024, 576, `${date}.png`); // file.name 대신 `${date}.png` 사용
             setImage(resizedImage);
             if (url) {
               await deleteExistingImage(url);
@@ -58,7 +65,7 @@ const ImageUpload = ({ ondownloadURL, name }) => {
       return;
     }
 
-    const storageRef = ref(storage, `uploads/${name}/${file.name}`);
+    const storageRef = ref(storage, `uploads/${name}/${date}.png`); // file.name 대신 `${date}.png` 사용
     try {
       await uploadBytes(storageRef, file);
       const downloadURL = await getDownloadURL(storageRef);
@@ -73,7 +80,7 @@ const ImageUpload = ({ ondownloadURL, name }) => {
     }
   };
 
-  const resizeImage = (img, width, height, originalFileName) => {
+  const resizeImage = (img, width, height, fileName) => {
     return new Promise((resolve) => {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
@@ -94,7 +101,7 @@ const ImageUpload = ({ ondownloadURL, name }) => {
       ctx.drawImage(img, (width - newWidth) / 2, (height - newHeight) / 2, newWidth, newHeight);
 
       canvas.toBlob((blob) => {
-        resolve(new File([blob], originalFileName, { type: 'image/png' }));
+        resolve(new File([blob], fileName, { type: 'image/png' }));
       }, 'image/png');
     });
   };
@@ -115,11 +122,8 @@ const ImageUpload = ({ ondownloadURL, name }) => {
           ) : (
             <span className="absolute inset-0 flex items-center justify-center text-gray-500">이미지 업로드</span>
           )}
-
-
         </label>
       </form>
-      <VideoGenerator url={url}/>
     </div>
   );
 };

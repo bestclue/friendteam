@@ -13,6 +13,8 @@ const Main = () => {
   const [parsedData, setParsedData] = useState(null);
   const [showPoem, setShowPoem] = useState(false);
   const [showDiary, setShowDiary] = useState(false); // 다이어리 표시 여부 상태 추가
+  const [date, setDate] = useState(new Date());
+  const [data, setData] = useState([]);
 
   const handleSignOut = () => {
     signOut({ callbackUrl: "/login" });
@@ -22,8 +24,10 @@ const Main = () => {
     setParsedData(data);
   };
 
-  const handleDiaryOpen = () => {
+  const handleDiaryOpen = (day, data) => {
     setShowDiary(true); // 다이어리 표시 상태를 true로 업데이트하여 다이어리를 보이도록 설정
+    setDate(day);
+    setData(data);
   };
 
   const handleDiaryClose = () => {
@@ -85,13 +89,12 @@ const Main = () => {
               user={session?.user}
               ondiaryinput={handleParsed}
               onClose={handleDiaryClose}
+              date = {date}
+              data = {data}
               />
           ) : (
             <>
-            <div className="mt-6 mb-6">
-            <Emotion />
-            </div>
-            <Calendartmp onDiaryOpen={handleDiaryOpen} />
+            <Calendartmp onDiaryOpen={handleDiaryOpen} name={session?.user?.name}/>
             </>
           )}
           </div>

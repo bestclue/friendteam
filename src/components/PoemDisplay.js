@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 
-const PoemDisplay = ({ entryId }) => {
+const PoemDisplay = ({ entryId, po, save }) => {
   const [loading, setLoading] = useState(true);
-  const [poem, setPoem] = useState('');
+  const [poem, setPoem] = useState(po);
 
   const savePoem = async (entryId, formattedPoem) => {
     try {
@@ -69,10 +69,14 @@ const PoemDisplay = ({ entryId }) => {
 
   useEffect(() => {
     console.log('useEffect 호출');
-    if(entryId) {
-    fetchData();
+    setPoem(po);
+  }, [po]);
+
+  useEffect(() => {
+    if(save){
+      fetchData();
     }
-  }, [entryId]);
+  }, [save]);
 
   return (
     <div className="h-full flex flex-col w-full bg-purple-100 p-6 border rounded-lg shadow-md">
