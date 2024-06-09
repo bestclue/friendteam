@@ -1,24 +1,29 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const Emotion = ({onEmotion}) => {
-  const [emotion, setEmotion] = useState('');
-  const emotions = ['기쁨🥳','편안😌', '무난😐', '피곤🥱','슬픔🥺','분노😠'];
+const Emotion = ({ onEmotion, emo }) => {
+  const [emotion, setEmotion] = useState(emo);
+  const emotions = ['기쁨🥳', '편안😌', '무난😐', '피곤🥱', '슬픔🥺', '분노😠'];
+
+  useEffect(() => {
+    setEmotion(emo);
+    console.log("dlah",emo);
+  }, [emo]);
 
   const handleEmotionChange = (newEmotion) => {
     setEmotion(newEmotion);
-    onEmotion(newEmotion); // Fixed: it should pass newEmotion instead of emotion
+    onEmotion(newEmotion);
   };
 
   return (
     <div className="w-full flex gap-4 p-4">
       {emotions.map((em, index) => (
-        <button 
-          key={index} 
+        <button
+          key={index}
           onClick={() => handleEmotionChange(em)}
           className={`h-fit bg-purple-500 hover:bg-purple-700 text-white py-2 px-4 rounded ${
-            emotion !== em ? 'bg-purple-500/25' : ''
+            emotion !== em ? 'bg-purple-500/25' : 'bg-purple-700'
           }`}
         >
           {em}
