@@ -15,6 +15,7 @@ const Main = () => {
   const [showDiary, setShowDiary] = useState(false); // 다이어리 표시 여부 상태 추가
   const [date, setDate] = useState(new Date());
   const [data, setData] = useState([]);
+  const [selectedEmotion, setSelectedEmotion] = useState('');
 
   const handleSignOut = () => {
     signOut({ callbackUrl: "/login" });
@@ -33,6 +34,10 @@ const Main = () => {
   const handleDiaryClose = () => {
     setShowDiary(false); // 다이어리 닫기 버튼 클릭 시 다이어리 표시 상태를 false로 업데이트
   };
+
+  const handleEmotionSelect = (emotion) => {
+    setSelectedEmotion(emotion);
+  };  
 
   const { data: session, status } = useSession({
     required: true,
@@ -58,8 +63,8 @@ const Main = () => {
       <div className="flex flex-col h-screen">
         <header className="bg-white shadow-md p-4 fixed top-0 left-0 right-0 z-10 h-12">
           <div className="container mx-auto flex justify-between items-center">
-            <h1 className="text-xl font-bold">Your App Name</h1>
-            <button onClick={handleSignOut} className="text-red-500">Sign Out</button>
+            <h1 className="text-xl font-bold">감성일기</h1>
+            <button onClick={handleSignOut} className="text-red-500">로그아웃</button>
           </div>
         </header>
         <div className="flex flex-col md:flex-row p-6 bg-gradient-to-b from-purple-400 to-pink-400 flex-grow">
@@ -68,6 +73,7 @@ const Main = () => {
               name={session?.user?.name}
               className="border rounded-lg shadow-md bg-white p-4"
               parsedData={parsedData}
+              selectedEmotion={selectedEmotion}
             />
           </div>
           <div className="md:w-3/4 w-full mr-6 mb-6 md:mb-0">
@@ -91,6 +97,7 @@ const Main = () => {
               onClose={handleDiaryClose}
               date = {date}
               data = {data}
+              onEmotionSelect={handleEmotionSelect}
               />
           ) : (
             <>
