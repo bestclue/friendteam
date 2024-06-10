@@ -107,7 +107,7 @@ const ImageUpload = ({ ondownloadURL, name, date, u }) => {
   };
 
   return (
-    <div className="w-2/3 mt-10">
+    <div className="w-full mt-10">
       <form className="flex flex-col items-center">
         <label
           className="relative w-full cursor-pointer flex flex-col items-center justify-center border-dashed border-2 border-purple-500 rounded-lg text-gray-500 mb-4"

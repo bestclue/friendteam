@@ -312,7 +312,7 @@ const Calendartmp = ({ onDiaryOpen, name, onMonthData, dates }) => {
   };
 
   return (
-    <div className="w-[95%] lg:w-4/5 h-full flex flex-col justify-center items-center rounded-3xl bg-purple-200 text-gray-darkest shadow-xl">
+    <div className="w-[95%] lg:w-4/5 h-full flex flex-col justify-center items-center rounded-2xl bg-purple-200 text-gray-darkest shadow-xl">
       <Emotion 
         onEmotion={handleEmotion}
       />
