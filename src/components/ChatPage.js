@@ -193,7 +193,7 @@ const handleSend = async (message) => {
         <div className="flex-1 overflow-auto sm:px-10 pb-4 sm:pb-10">
           <div className="max-w-[800px] mx-auto mt-4 sm:mt-12">
             {/* AI 메시지 출력 */}
-            <div className="mb-4 overflow-y-auto" style={{ maxHeight: "200px" }}>
+            <div className="mb-4" style={{ overflowY: "hidden" }}>
                 {
                 (messages
                   .filter((message) => message.role === "model")
