@@ -8,7 +8,7 @@ import VideoGenerator from './VideoGenerator';
 
 
 
-const ImageUpload = ({ ondownloadURL, name, date, u }) => {
+const ImageUpload = ({ ondownload, name, date, u }) => {
   const [image, setImage] = useState(null);
   const [url, setUrl] = useState(u);
 
@@ -69,7 +69,7 @@ const ImageUpload = ({ ondownloadURL, name, date, u }) => {
     try {
       await uploadBytes(storageRef, file);
       const downloadURL = await getDownloadURL(storageRef);
-      ondownloadURL(downloadURL);
+      ondownload(downloadURL);
       console.log('Download URL:', downloadURL);
       setUrl(downloadURL);
       console.log('setUrl 호출 후 URL:', downloadURL);  // setUrl 호출 후 확인
