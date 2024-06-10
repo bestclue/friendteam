@@ -23,8 +23,8 @@ const RenderHeader = ({
     <div className="w-full flex flex-row justify-between items-baseline p-4 pl-8 pr-6 pt-8">
       <div className="col w-4/5 h-full flex flex-col justify-center items-start mr-1 col-start">
         <span className="text-l">
-          <span className="text-4xl month mx-4 font-semibold text-gray-darkest">
-            {format(currentMonth, "M")}
+          <span className="text-4xl month mx-4 font-semibold text-gray-800">
+            {format(currentMonth, "MM")}
           </span>
           {format(currentMonth, "yyyy")}
         </span>
@@ -35,7 +35,7 @@ const RenderHeader = ({
             prevHover ? "bi:arrow-left-circle-fill" : "bi:arrow-left-circle"
           }`}
           color="gray"
-          className="w-3/12 h-full ml-3"
+          className="w-2/12 h-full ml-3"
           onMouseOver={isPrevHovering}
           onMouseOut={notPrevHovering}
           onClick={prevMonth}
@@ -45,7 +45,7 @@ const RenderHeader = ({
             nextHover ? "bi:arrow-right-circle-fill" : "bi:arrow-right-circle"
           }`}
           color="gray"
-          className="w-3/12 h-full ml-3"
+          className="w-2/12 h-full ml-3 mr-5"
           onMouseOver={isNextHovering}
           onMouseOut={notNextHovering}
           onClick={nextMonth}
@@ -56,15 +56,15 @@ const RenderHeader = ({
 };
 
 const RenderDays = () => {
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const days = ["일", "월", "화", "수", "목", "금", "토"];
 
   return (
-    <div className="days w-full h-fit p-1 px-4 row flex flex-row justify-between items-center ">
+    <div className="mt-2 days w-full h-fit p-1 px-5 row flex flex-row justify-between items-center ">
       {days.map((day, index) => (
         <div
           className={`col w-1/6 h-full flex flex-col pb-[10px] justify-end items-center px-1 ${
             index === 0 ? "text-orange-500" : index === 6 ? "text-blue-500" : "text-gray-900"
-          }  font-bold border-gray-900 border-b-[1px]`}
+          }  font-bold text-xl border-gray-900 border-b-[1px]`}
           key={index}
         >
           {day}
@@ -110,11 +110,11 @@ const RenderCells = ({
       days.push(
         <div className="w-1/6 h-5/6 flex flex-col justify-start items-center" key={day}>
           <div
-            className={`col w-16 h-16 justify-center text-center grid grid-rows-5 items-center px-1 rounded-full cell ${
+            className={`col w-14 h-16 justify-center text-center grid grid-rows-5 items-center px-1 rounded-full cell ${
               !isSameMonth(day, monthStart)
                 ? "disabled text-gray-500 border-[1px] border-gray-400"
                 : isSameDay(day, nowDate)
-                ? "selected bg-purple-500 text-gray-100 font-bold border-[1px] border-purple-700 hover:bg-blue-300 hover:border-[1px] hover:border-blue-700"
+                ? "selected bg-gray-100 border-purple-500 font-bold border-[1px] border-purple-700 hover:bg-blue-300 hover:border-[1px] hover:border-blue-700"
                 : format(currentMonth, "M") !== format(day, "M")
                 ? "not-valid"
                 : isSameDay(day, selectedDate)
@@ -132,7 +132,7 @@ const RenderCells = ({
           >
             <span
               className={`
-                row-span-3
+                row-span-5 
                 ${
                   format(currentMonth, "M") !== format(day, "M")
                     ? "text not-valid"
@@ -159,7 +159,7 @@ const RenderCells = ({
   }
 
   return (
-    <div className="body w-full h-5/7 flex flex-col justify-center items-center mb-3 mt-1 px-4">
+    <div className="body w-full h-5/7 flex flex-col justify-center items-center mb-3 mt-1 px-5">
       {rows}
       <Modal
   isOpen={modalIsOpen}
@@ -229,7 +229,7 @@ const RenderCells = ({
 
         <div className="flex justify-center"> {/* 버튼을 중앙에 정렬 */}
                 <button
-                  onClick={() => onDiaryOpen(ndata.date, ndata[0])}
+                  onClick={() => onDiaryOpen(ndata.date, ndata)}
                   className="mt-4 px-4 py-2 bg-purple-500 text-white rounded"
                 >
                   전체보기

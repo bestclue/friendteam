@@ -136,7 +136,7 @@ const handleSend = async (message) => {
     setMessages([
       {
         role: "model",
-        parts: [{ text: `안녕하세요, ${name}님!  오늘은 무슨 일이 있었나요? 찾고 싶으신 일기가 있으시면 대괄호 안에 이렇게 [해당 일기 텍스트]를 입력해주세요.` }],
+        parts: [{ text: `안녕하세요, ${name}님! 오늘은 무슨 일이 있었나요? 찾고 싶으신 일기가 있으시면 대괄호 안에 이렇게 [해당 일기 텍스트]를 입력해주세요.` }],
       },
     ]);
     setEmotion("기본");
