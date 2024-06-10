@@ -104,11 +104,11 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
         console.log('Document written with ID: ', docRef.id);
       }
 
-      alert('Entry saved successfully!');
+      alert('일기를 성공적으로 저장했어요!');
       setSave(true);
     } catch (error) {
       console.error('Error saving document: ', error);
-      alert('Failed to save entry. Please try again.');
+      alert('일기를 저장하는 데 문제가 생겼어요. 다시 시도해주세요🥺');
     }
   };
 
@@ -150,7 +150,7 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
         <textarea
           className="bg-white/0 w-[45%] p-4 border rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none h-9/10 mt-9"
           rows="10"
-          placeholder="Enter your thoughts here..."
+          placeholder="오늘의 하루를 정리해주세요"
           value={text}
           onChange={handleTextChange}
         ></textarea>
