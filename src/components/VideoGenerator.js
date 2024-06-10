@@ -1,47 +1,43 @@
-'use client'
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import axios from "axios";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
-
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 
-const VideoGenerator = ({ url, entryId, vd, save}) => {
+const VideoGenerator = ({ url, entryId, vd, save, onLoadingComplete }) => {
   const apiKey = process.env.STABLE_DIFFUSION_API_KEY;
   const [generationId, setGenerationId] = useState(null);
   const [videoUrl, setVideoUrl] = useState(vd);
   const [status, setStatus] = useState(null);
 
-useEffect(() => {
-  const generateVideo = async () => {
-    if (!apiKey || !url) {
-      setStatus("API key and image URL are required");
-      console.log(apiKey);
-      console.log(url);
-      return;
-    }
+  useEffect(() => {
+    const generateVideo = async () => {
+      if (!apiKey || !url) {
+        setStatus("API key and image URL are required");
+        console.log(apiKey);
+        console.log(url);
+        return;
+      }
 
-    try {
-      const response = await axios.post("/api/generate-video", { apiKey, imageUrl: url });
-      console.log("Generation ID received:", response.data.generationId);
-      setGenerationId(response.data.generationId);
-      setStatus("Video generation started...");
-    } catch (error) {
-      console.error(error);
-      setStatus("Error starting video generation");
-    }
-  };
+      try {
+        const response = await axios.post("/api/generate-video", { apiKey, imageUrl: url });
+        console.log("Generation ID received:", response.data.generationId);
+        setGenerationId(response.data.generationId);
+        setStatus("Video generation started...");
+      } catch (error) {
+        console.error(error);
+        setStatus("Error starting video generation");
+      }
+    };
 
-  if(save) {
-    generateVideo();
+    if(save) {
+      generateVideo();
     }
-}, [save]);
+  }, [save]);
 
-useEffect(() => {
-  console.log('useEffect 호출');
-  setVideoUrl(vd);
-}, [vd]);
+  useEffect(() => {
+    console.log('useEffect 호출');
+    setVideoUrl(vd);
+  }, [vd]);
 
   const saveVideo = async (entryId, video) => {
     try {
@@ -53,7 +49,7 @@ useEffect(() => {
     } catch (error) {
       console.error('Error saving video to Firestore:', error);
     }
-  };  
+  };
 
   const checkVideoResult = async () => {
     if (!generationId) return;
@@ -66,11 +62,13 @@ useEffect(() => {
         console.log("Video URL received:", response.data.videoUrl);
         setVideoUrl(response.data.videoUrl);
         setStatus("Generation is complete!");
-        saveVideo(entryId, videoUrl);
+        saveVideo(entryId, response.data.videoUrl);
       }
     } catch (error) {
       console.error(error);
       setStatus("Error checking video result");
+    } finally {
+      onLoadingComplete(); // 로딩 완료
     }
   };
 
@@ -84,9 +82,18 @@ useEffect(() => {
 
   return (
     <div>
-      {videoUrl && (
+      {videoUrl ? (
         <div>
           <video src={videoUrl} controls autoPlay loop width="600" />
+        </div>
+      ) : (
+        <div className="loading-container">
+          <img
+            id="video-image"
+            src="감성일기 곰돌이 시 생성.png"
+            alt="Generating Video..."
+            className='h-24 w-20'
+          />
         </div>
       )}
     </div>
