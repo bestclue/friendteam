@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState, useEffect } from 'react';
 
@@ -8,12 +8,17 @@ const Emotion = ({ onEmotion, emo }) => {
 
   useEffect(() => {
     setEmotion(emo);
-    console.log("dlah",emo);
+    console.log("Current emotion:", emo);
   }, [emo]);
 
   const handleEmotionChange = (newEmotion) => {
-    setEmotion(newEmotion);
-    onEmotion(newEmotion);
+    if (emotion === newEmotion) {
+      setEmotion(null);
+      onEmotion(null);
+    } else {
+      setEmotion(newEmotion);
+      onEmotion(newEmotion);
+    }
   };
 
   return (
