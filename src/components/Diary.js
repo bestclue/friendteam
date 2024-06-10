@@ -113,11 +113,11 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
   };
 
   return (
-    <div className="h-full flex flex-col w-full bg-[#E4DAFF] p-6 border rounded-lg shadow-md">
-      <h2 className="text-2xl font-semibold mb-4 text-gray-800">{date}</h2>
+    <div className="h-full flex flex-col w-4/5 bg-[#E4DAFF] p-6 border rounded-2xl shadow-md">
+      <h2 className="text-2xl font-semibold mb-4 text-gray-800 ml-4">{date}</h2>
       <div className="flex w-full gap-4 h-full">
         <div className="flex flex-col w-2/3 gap-4 h-full">
-          <div className="flex-grow h-full">
+          <div className="flex-grow w-7/8 h-full ml-4">
             {!videoUrl ? (<ImageUpload 
               onDownloadURL={handleImageUpload} 
               name={name} 
@@ -133,12 +133,18 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
             />)}
           </div>
           <div>
-            <Emotion 
-              emo={emotion} 
-              onEmotion={handleEmotion}
-            />
+          <Emotion 
+  emo={emotion} 
+  onEmotion={handleEmotion}
+  style={{
+    width: '100%', // 화면 가로폭에 맞게 너비를 조절합니다.
+    margin: 'auto', // 가운데 정렬을 위해 좌우 여백을 자동으로 조절합니다
+    marginLeft: '20px', // 왼쪽 여백을 20px로 설정합니다.
+    marginRight: '20px', // 오른쪽 여백을 20px로 설정합니다.
+  }}
+/>
           </div>
-          <div className="flex-grow h-full bg-white/0 p-4 border rounded-lg shadow-inner mt-4">
+          <div className="flex-grow h-7/8 bg-white/0 p-4 border rounded-lg shadow-inner mt-4 ml-2">
             <PoemDisplay 
               entryId={entryId} 
               po={data?.poem} // Pass the poem from data
@@ -147,7 +153,7 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
           </div>
         </div>
         <textarea
-          className="bg-white/0 w-1/3 p-4 border rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none h-full"
+          className="bg-white/0 w-1/3 p-4 border rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none h-9/10 mt-9"
           rows="10"
           placeholder="Enter your thoughts here..."
           value={text}
