@@ -120,7 +120,7 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
         <div className="flex flex-col w-[55%] gap-4 h-full">
           <div className="flex-grow flex items-center w-7/8">
             {!videoUrl ? (<ImageUpload 
-              onDownloadURL={handleImageUpload} 
+              ondownload={handleImageUpload} 
               name={name} 
               className="h-full" 
               date={date} 
