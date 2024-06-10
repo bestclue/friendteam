@@ -70,7 +70,15 @@ const Main = () => {
   };
 
   if (status === "loading") {
-    return <div>Loading...</div>;
+    return <div className="flex flex-col justify-center items-center text-center space-y-10 bg-purple-300 min-h-screen">
+    <div className="font-semibold text-xl">
+      로딩 중입니다.
+      <br />
+      <img src="/감성일기 곰돌이.png" alt="감성일기 곰돌이" width="500" height="500"/>
+      <br />
+      잠시 기다려주세요.
+    </div>
+</div>;
   } else {
     return (
       <div className="flex flex-col h-screen ">
@@ -88,7 +96,7 @@ const Main = () => {
               <img src="/감성일기 곰돌이.png" alt="감성일기 곰돌이" width="30" height="30" style={{ marginRight: '10px' }} />
               감.성.일.기.
             </h1>
-            <button onClick={handleSignOut} className="text-red-500">sign out</button>
+            <button onClick={handleSignOut} className="text-red-500 font-bold">sign out</button>
           </div>
         </header>
         <div className="flex flex-col md:flex-row p-6 bg-gradient-to-b from-purple-400 to-pink-400 flex-grow">
