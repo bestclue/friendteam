@@ -110,7 +110,7 @@ const Main = () => {
               onSearchDates={handleSearchDates}
             />
           </div>
-          <div className="mt-10 md:w-3/4 w-full mr-6 mb-6 md:mb-0">
+          <div className="md:w-3/4 h-full mr-6 mb-6 md:mb-0">
             {showDiary ? (
               <Diary
                 name={session?.user?.name}
