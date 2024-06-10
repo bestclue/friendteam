@@ -110,23 +110,22 @@ const RenderCells = ({
       days.push(
         <div className="w-1/6 h-5/6 flex flex-col justify-start items-center" key={day}>
           <div
-            className={`col w-14 h-16 justify-center text-center grid grid-rows-5 items-center px-1 rounded-full cell ${
+            className={`col w-16 h-16 justify-center text-center grid grid-rows-5 items-center px-1 rounded-full cell ${
               !isSameMonth(day, monthStart)
                 ? "disabled text-gray-500 border-[1px] border-gray-400"
-                : isSameDay(day, nowDate)
-                ? "selected bg-gray-100 border-purple-500 font-bold border-[1px] border-purple-700 hover:bg-blue-300 hover:border-[1px] hover:border-blue-700"
-                : format(currentMonth, "M") !== format(day, "M")
-                ? "not-valid"
-                : isSameDay(day, selectedDate)
-                ? "bg-blue-500 text-gray-100"
                 : isDateInBoth
                 ? "bg-orange-300 text-white"
                 : isDateInDates
                 ? "bg-yellow-200 text-white"
                 : isDateInFilteredDates
                 ? "bg-red-300 text-white"
+                : format(currentMonth, "M") !== format(day, "M")
+                ? "not-valid"
+                : isSameDay(day, selectedDate)
+                ? "bg-blue-500 text-gray-100"
                 : "valid bg-gray-100 border-[1px] border-gray-300 hover:bg-blue-300 hover:border-[1px] hover:border-blue-700 hover:text-gray-100"
-            }`}
+                
+            } ${isSameDay(day, nowDate) && "selected border-purple-500 font-bold border-[1px] border-purple-700 hover:bg-blue-300 hover:border-[1px] hover:border-blue-700"}`}
             key={day}
             onClick={() => onDateClick(cloneDay)}
           >
@@ -159,11 +158,11 @@ const RenderCells = ({
   }
 
   return (
-    <div className="body w-full h-5/7 flex flex-col justify-center items-center mb-3 mt-1 px-5">
+    <div className="body h-[550px] w-full flex flex-col justify-center items-start mb-3 mt-1 px-5">
       {rows}
       <Modal
   isOpen={modalIsOpen}
-  className="z-10 flex flex-col justify-start items-center bg-gray-lightest border-3 border-gray"
+  className="z-10 flex flex-col justify-start items-start bg-gray-lightest border-3 border-gray"
   contentLabel="Modal for calendar"
   onRequestClose={() => setModalIsOpen(false)}
   shouldCloseOnOverlayClick={false}
@@ -308,7 +307,7 @@ const Calendartmp = ({ onDiaryOpen, name, onMonthData, dates }) => {
 
   // 모달 닫기 핸들러
   const closeModal = () => {
-    setSelectedDate(new Date());
+    setSelectedDate();
     setModalIsOpen(false);
   };
 
@@ -335,10 +334,8 @@ const Calendartmp = ({ onDiaryOpen, name, onMonthData, dates }) => {
   };
 
   return (
-    <div className="w-[95%] lg:w-4/5 h-full flex flex-col justify-center items-center rounded-2xl bg-purple-200 text-gray-darkest shadow-xl">
-      <Emotion 
-        onEmotion={handleEmotion}
-      />
+    <div className="w-full h-full flex flex-col justify-center items-center rounded-2xl bg-purple-200 text-gray-darkest shadow-xl">
+
       <RenderHeader
         currentMonth={currentMonth}
         prevMonth={prevMonth}
@@ -363,6 +360,11 @@ const Calendartmp = ({ onDiaryOpen, name, onMonthData, dates }) => {
         dates={dates}
         filteredDates={filteredDates}
       />
+            <div>
+      <Emotion 
+        onEmotion={handleEmotion}
+      />
+      </div>
     </div>
   );
 };

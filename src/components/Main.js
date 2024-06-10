@@ -103,8 +103,8 @@ const Main = () => {
           </div>
         </header>
 
-        <div className="grid-col items-center flex md:flex-row p-6 bg-gradient-to-b from-purple-400 to-pink-400 ">
-          <div className="md:w-1/4 h-full mb-6 md:mb-0 md:mr-6">
+        <div className="h-screen p-6 bg-gradient-to-b from-purple-400 to-pink-400 flex justify-center px-4 items-stretch">
+          <div className="w-2/12 mr-6">
             <ChatPage
               name={session?.user?.name}
               className="border rounded-lg shadow-md bg-white p-4"
@@ -114,7 +114,7 @@ const Main = () => {
               onSearchDates={handleSearchDates}
             />
           </div>
-          <div className="md:w-3/4 h-full mr-6 mb-6 md:mb-0">
+          <div className="h-full w-[50%] py-4 ml-12 grid justify-stretch">
             {showDiary ? (
               <Diary
                 name={session?.user?.name}
@@ -126,18 +126,19 @@ const Main = () => {
                 onEmotionSelect={handleEmotionSelect}
               />
             ) : (
-              <>
+              <div
+              >
                 <Calendartmp
                   onDiaryOpen={handleDiaryOpen}
                   name={session?.user?.name}
                   onMonthData={handleMonthData}
                   dates={searchedDates} // dates 속성 추가
                 />
-              </>
+              </div>
             )}
           </div>
+          </div>
         </div>
-      </div>
     );
   }
 };
