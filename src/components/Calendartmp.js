@@ -208,9 +208,6 @@ const Calendartmp = ({ onDiaryOpen, name, onMonthData, dates }) => {
   const [filteredDates, setFilteredDates] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  useEffect(() => {
-    setFilteredDates(dates);
-  }, [dates]);
 
   // 감정 필터링 핸들러
   const handleEmotion = (emo) => {

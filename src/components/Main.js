@@ -76,14 +76,15 @@ const Main = () => {
       <div className="flex flex-col h-screen">
         <header className="bg-purple-300 shadow-md p-4 fixed top-0 left-0 right-0 z-10 h-12">
           <div className="container mx-auto flex justify-between items-center">
-            <h1
-              className="text-xl font-bold cursor-pointer"
-              onClick={() => {
-                handleDiaryClose();
-                resetSearch(); // onClick 핸들러에 resetSearch 추가
-              }}
-              style={{ display: 'flex', alignItems: 'center' }}
-            >
+          <h1
+  className="text-xl font-bold cursor-pointer"
+  onClick={() => {
+    handleDiaryClose();
+    resetSearch(); // onClick 핸들러에 resetSearch 추가
+    window.location.reload();
+  }}
+  style={{ display: 'flex', alignItems: 'center' }}
+>
               <img src="/감성일기 곰돌이.png" alt="감성일기 곰돌이" width="30" height="30" style={{ marginRight: '10px' }} />
               감성일기
             </h1>
