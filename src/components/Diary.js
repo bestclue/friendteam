@@ -1,12 +1,10 @@
-"use client";
-
 import React, { useState, useEffect } from 'react';
 import { db, storage } from "@/firebase";
 import { doc, collection, addDoc, updateDoc } from "firebase/firestore";
 import ImageUpload from '@/components/ImageUpload';
 import Emotion from "@/components/Emotion";
-import PoemDisplay from "@/components/PoemDisplay";
-import VideoGenerator from './VideoGenerator';
+import PoemDisplay from '@/components/PoemDisplay';
+import VideoGenerator from '@/components/VideoGenerator';
 
 const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotionSelect }) => {
   const [url, setUrl] = useState('');
@@ -15,7 +13,8 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
   const [emotion, setEmotion] = useState('');
   const [entryId, setEntryId] = useState('');
   const [save, setSave] = useState(false);
-  const [sentenceCount, setSentenceCount] = useState('0');
+  const [sentenceCount, setSentenceCount] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (data) {
@@ -57,22 +56,12 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
         console.log("newText:", processedText);
       }
     }
-};
+  };
 
   const handleEmotion = (emotion) => {
     setEmotion(emotion);
     onEmotionSelect(emotion);
   };
-
-  {/*
-  const handleKeyPress = async (e) => {
-    if (e.key === 'Enter') {
-      const lastNewlineIndex = text.lastIndexOf('\n');
-      const recentText = lastNewlineIndex !== -1 ? text.slice(lastNewlineIndex + 1) : text;
-      ondiaryinput(recentText);
-    }
-  };
-  */}
 
   const handleSaveEntry = async () => {
     if (!name) {
@@ -104,12 +93,17 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
         console.log('Document written with ID: ', docRef.id);
       }
 
-      alert('일기를 성공적으로 저장했어요!');
+      alert('Your diary has been successfully saved!');
       setSave(true);
+      setLoading(true); // 로딩 시작
     } catch (error) {
       console.error('Error saving document: ', error);
-      alert('일기를 저장하는 데 문제가 생겼어요. 다시 시도해주세요🥺');
+      alert('There was a problem saving your diary. Please try again.');
     }
+  };
+
+  const handleLoadingComplete = () => {
+    setLoading(false); // 로딩 완료
   };
 
   return (
@@ -119,38 +113,47 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
       <div className="flex w-full gap-4 h-full">
         <div className="flex flex-col w-[55%] gap-4 h-full">
           <div className="flex-grow flex items-center w-7/8">
-            {!videoUrl ? (<ImageUpload 
-              ondownload={handleImageUpload} 
-              name={name} 
-              className="h-full" 
-              date={date} 
-              u={url} // Pass the image URL from state
-            />) :(
-            <VideoGenerator 
-              url={videoUrl} // Pass the video URL from state
-              entryId={entryId} 
-              vd={videoUrl}
-              save={save}
-            />)}
+            {!videoUrl ? (
+              <ImageUpload 
+                ondownload={handleImageUpload} 
+                name={name} 
+                className="h-full" 
+                date={date} 
+                u={url} // Pass the image URL from state
+              />
+            ) : (
+              <VideoGenerator 
+                url={videoUrl} // Pass the video URL from state
+                entryId={entryId} 
+                vd={videoUrl}
+                save={save}
+                onLoadingComplete={handleLoadingComplete}
+              />
+            )}
           </div>
           <div>
-          <Emotion 
-  emo={emotion} 
-  onEmotion={handleEmotion}
-/>
-          </div>
-          {data?.poem && <div className="mt-8">
-            <PoemDisplay 
-              entryId={entryId} 
-              po={data?.poem} // Pass the poem from data
-              save={save}
+            <Emotion 
+              emo={emotion} 
+              onEmotion={handleEmotion}
             />
-          </div>}
+          </div>
+          {data?.poem && 
+            <div className="mt-8">
+              <PoemDisplay 
+                entryId={entryId} 
+                po={data?.poem} // Pass the poem from data
+                save={save}
+                onLoadingComplete={handleLoadingComplete}
+              />
+              {/* Add the image here */}
+              <img src={url} alt="Poem Image" className="w-full max-w-[300px] mx-auto mt-4" />
+            </div>
+          }
         </div>
         <textarea
           className="bg-white/0 w-[45%] p-4 border rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none h-9/10 mt-9"
           rows="10"
-          placeholder="오늘의 하루를 정리해주세요"
+          placeholder="Write about your day here"
           value={text}
           onChange={handleTextChange}
         ></textarea>
@@ -163,6 +166,11 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
           Save Diary
         </button>
       </div>
+      {loading && (
+        <div className="loading-overlay">
+          <img src="감성일기 곰돌이 시 생성.png" alt="Loading..." className="loading-image" />
+        </div>
+      )}
     </div>
   );
 };

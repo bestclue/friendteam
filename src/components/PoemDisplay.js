@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 
-const PoemDisplay = ({ entryId, po, save }) => {
+const PoemDisplay = ({ entryId, po, save, onLoadingComplete }) => {
   const [loading, setLoading] = useState(true);
   const [poem, setPoem] = useState(po);
 
@@ -64,6 +64,7 @@ const PoemDisplay = ({ entryId, po, save }) => {
       console.error("Error fetching or processing data: ", error);
     } finally {
       setLoading(false);
+      onLoadingComplete(); // 로딩 완료
     }
   };
 
@@ -78,29 +79,24 @@ const PoemDisplay = ({ entryId, po, save }) => {
     }
   }, [save]);
 
-  useEffect(() => {
-    if (!loading && !save) {
-      const imageElement = document.getElementById('poem-image');
-      if (imageElement) {
-        imageElement.remove();
-      }
-    }
-  }, [loading, save]);
-
   return (
     <div className="h-full flex flex-col w-full bg-purple-100 p-6 rounded-lg shadow-md">
       <h2 className="text-xl font-semibold text-gray-800">오늘의 시</h2>
-      {(loading && save) ? (<img
-    id="poem-image"
-    src="감성일기 곰돌이 시 생성.png"
-    alt="Generating Poem..."
-    className='h-24 w-20'
-  />):(
-      <div className="overflow-auto bg-white/0 w-full h-24 p-4 mt-4"
-      dangerouslySetInnerHTML={{ __html: poem }}>
-      </div> )}
+      {loading && save ? (
+        <div className="loading-container">
+          <img
+            id="poem-image"
+            src="감성일기 곰돌이 시 생성.png"
+            alt="Generating Poem..."
+            className='h-24 w-20'
+          />
+        </div>
+      ) : (
+        <div className="overflow-auto bg-white/0 w-full h-24 p-4 mt-4"
+          dangerouslySetInnerHTML={{ __html: poem }}>
+        </div> 
+      )}
     </div>
-
   );
 };
 
