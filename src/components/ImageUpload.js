@@ -23,7 +23,7 @@ const ImageUpload = ({ ondownload, name, date, u }) => {
       img.src = URL.createObjectURL(file);
       img.onload = async () => {
         if (img.width !== 1024 || img.height !== 576) {
-          if (window.confirm('이미지 크기가 1024*576이 아닙니다. 수정해드릴까요?')) {
+          if (window.confirm('이미지 크기가 1024*576이 아니에요. 수정해드릴까요?')) {
             const resizedImage = await resizeImage(img, 1024, 576, `${date}.png`); // file.name 대신 `${date}.png` 사용
             setImage(resizedImage);
             if (url) {
@@ -31,7 +31,7 @@ const ImageUpload = ({ ondownload, name, date, u }) => {
             }
             await handleSubmit(resizedImage);
           } else {
-            alert('이미지를 업로드할 수 없습니다.');
+            alert('이미지를 업로드할 수 없어요.');
             setImage(null);
           }
         } else {
@@ -43,7 +43,7 @@ const ImageUpload = ({ ondownload, name, date, u }) => {
         }
       };
     } else {
-      alert('Please select a valid image file');
+      alert('올바른 이미지 파일을 올려주세요');
       setImage(null);
     }
   };
@@ -55,7 +55,7 @@ const ImageUpload = ({ ondownload, name, date, u }) => {
       console.log('Existing image deleted successfully');
     } catch (error) {
       console.error('Error deleting existing image: ', error);
-      alert('Error deleting existing image');
+      alert('이미지를 삭제하는 과정에서 문제가 발생했어요');
     }
   };
 
@@ -73,10 +73,10 @@ const ImageUpload = ({ ondownload, name, date, u }) => {
       console.log('Download URL:', downloadURL);
       setUrl(downloadURL);
       console.log('setUrl 호출 후 URL:', downloadURL);  // setUrl 호출 후 확인
-      alert('Image uploaded successfully!');
+      alert('이미지를 저장했어요!');
     } catch (error) {
       console.error('Error uploading image: ', error);
-      alert('Error uploading image');
+      alert('이미지를 업로드하는 과정에서 문제가 생겼어요');
     }
   };
 
