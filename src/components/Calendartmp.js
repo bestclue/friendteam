@@ -1,18 +1,12 @@
-
 import React, { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import { format, addMonths, subMonths } from "date-fns";
 import { startOfMonth, endOfMonth, startOfWeek, endOfWeek } from "date-fns";
 import { isSameMonth, isSameDay, addDays } from "date-fns";
 import Modal from "react-modal";
-import Diary from "@/components/Diary";
-import "../styles/globals.css";
 import Emotion from "@/components/Emotion";
-
-import { db, storage } from "@/firebase";
-
+import { db } from "@/firebase";
 import { doc, collection, addDoc, setDoc, getDocs, query, where } from "firebase/firestore";
-
 
 const RenderHeader = ({
   currentMonth,
@@ -177,7 +171,6 @@ const RenderCells = ({
         <div
           className={`w-full flex-row items-center p-3 px-6 grid grid-cols-10 bg-blue text-xl text-gray-lightest rounded-t-[20px]`}
         >
-
         </div>
         <div
           className="flex w-full px-6 flex-col justify-start items-start overflow-y-scroll pb-5 no-scrollbar"
@@ -205,7 +198,7 @@ const RenderCells = ({
     </div>
   );
 };
-const Calendartmp = ({ onDiaryOpen, name, onMonthData, dates }) => { // 변경: 다이어리 열기 함수를 props로 전달
+const Calendartmp = ({ onDiaryOpen, name, onMonthData, dates }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [prevHover, setPrevHover] = useState(false);
@@ -213,35 +206,42 @@ const Calendartmp = ({ onDiaryOpen, name, onMonthData, dates }) => { // 변경: 
   const [monthdata, setMonthData] = useState([]);
   const [ndata, setNdata] = useState(null);
   const [filteredDates, setFilteredDates] = useState([]);
-
-
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
+  useEffect(() => {
+    setFilteredDates(dates);
+  }, [dates]);
+
+  // 감정 필터링 핸들러
   const handleEmotion = (emo) => {
     const filteredData = monthdata.filter(item => item.emotion === emo);
-    setFilteredDates(filteredData.map(item => item.date)); // 해당 감정에 해당하는 일기들의 날짜 배열 업데이트
+    setFilteredDates(filteredData.map(item => item.date));
   };  
 
+  // 이전 달로 이동
   const prevMonth = () => {
     setCurrentMonth(subMonths(currentMonth, 1));
   };
 
+  // 다음 달로 이동
   const nextMonth = () => {
     setCurrentMonth(addMonths(currentMonth, 1));
   };
-  
+
+  // 이전 달 화살표 호버링 핸들러
   const isPrevHovering = () => {
     setPrevHover(true);
   };
-  
+
   const notPrevHovering = () => {
     setPrevHover(false);
   };
-  
+
+  // 다음 달 화살표 호버링 핸들러
   const isNextHovering = () => {
     setNextHover(true);
   };
-  
+
   const notNextHovering = () => {
     setNextHover(false);
   };
@@ -251,41 +251,41 @@ const Calendartmp = ({ onDiaryOpen, name, onMonthData, dates }) => { // 변경: 
     fetchData();
   }, [currentMonth]);
 
+  // 날짜 클릭 핸들러
   const onDateClick = (day) => {
     setSelectedDate(day);
     const ndata = monthdata.find(item => item.date === day);
     setNdata(ndata);
-    ndata?setModalIsOpen(true):onDiaryOpen(day,ndata);
+    ndata ? setModalIsOpen(true) : onDiaryOpen(day, ndata);
   };
 
+  // 모달 닫기 핸들러
   const closeModal = () => {
     setSelectedDate(new Date());
     setModalIsOpen(false);
   };
 
-
+  // 데이터베이스에서 데이터 가져오기
   const fetchData = async () => {
     const startDate = parseInt(currentMonth.toISOString().slice(0,7).replace('-',''))*100;
     const endDate = parseInt(currentMonth.toISOString().slice(0,7).replace('-',''))*100+31;
-  
+
     const q = query(
       collection(db, "diaryEntries"),
       where("name", "==", `${name}`),
       where("date", "<=", endDate),
       where("date", ">=", startDate),
     );
-  
+
     const querySnapshot = await getDocs(q);
     const data = [];
     querySnapshot.forEach((doc) => {
       data.push({id:doc.id, ...doc.data() });
     });
-  
+
     setMonthData(data);
     onMonthData(data);
   };
-  
-
 
   return (
     <div className="w-[95%] lg:w-4/5 h-full flex flex-col justify-center items-center rounded-3xl bg-purple-200 text-gray-darkest shadow-xl">

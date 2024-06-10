@@ -3,10 +3,8 @@ import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import Diary from "@/components/Diary";
 import ChatPage from "@/components/ChatPage";
-import PoemDisplay from "@/components/PoemDisplay";
 import "../styles/globals.css";
 import Calendartmp from "./Calendartmp";
-import Emotion from "@/components/Emotion";
 
 const Main = () => {
   const router = useRouter();
@@ -17,7 +15,7 @@ const Main = () => {
   const [data, setData] = useState([]);
   const [selectedEmotion, setSelectedEmotion] = useState('');
   const [monthdata, setMonthData] = useState([]);
-  const [searchedDates, setSearchedDates] = useState([]);
+  const [searchedDates, setSearchedDates] = useState([]); // searchedDates 상태 추가
 
   const handleSignOut = () => {
     signOut({ callbackUrl: "/login" });
@@ -42,7 +40,7 @@ const Main = () => {
   };
 
   const resetSearch = () => {
-    setSearchedDates([]); // Reset the searched dates
+    setSearchedDates([]); // resetSearch 함수 추가
   };
 
   const { data: session, status } = useSession({
@@ -82,7 +80,7 @@ const Main = () => {
               className="text-xl font-bold cursor-pointer"
               onClick={() => {
                 handleDiaryClose();
-                resetSearch();
+                resetSearch(); // onClick 핸들러에 resetSearch 추가
               }}
               style={{ display: 'flex', alignItems: 'center' }}
             >
@@ -120,7 +118,7 @@ const Main = () => {
                   onDiaryOpen={handleDiaryOpen}
                   name={session?.user?.name}
                   onMonthData={handleMonthData}
-                  dates={searchedDates}
+                  dates={searchedDates} // dates 속성 추가
                 />
               </>
             )}
