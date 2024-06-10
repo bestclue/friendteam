@@ -112,7 +112,7 @@ const RenderCells = ({
           <div
             className={`col w-16 h-16 justify-center text-center grid grid-rows-5 items-center px-1 rounded-full cell ${
               !isSameMonth(day, monthStart)
-                ? "disabled text-gray-500 border-[1px] border-gray-300"
+                ? "disabled text-gray-500 border-[1px] border-gray-400"
                 : isSameDay(day, nowDate)
                 ? "selected bg-purple-500 text-gray-100 font-bold border-[1px] border-purple-700 hover:bg-blue-300 hover:border-[1px] hover:border-blue-700"
                 : format(currentMonth, "M") !== format(day, "M")
@@ -120,7 +120,7 @@ const RenderCells = ({
                 : isSameDay(day, selectedDate)
                 ? "bg-blue-500 text-gray-100"
                 : isDateInBoth
-                ? "bg-orange-400 text-white"
+                ? "bg-orange-300 text-white"
                 : isDateInDates
                 ? "bg-yellow-200 text-white"
                 : isDateInFilteredDates
@@ -162,32 +162,59 @@ const RenderCells = ({
     <div className="body w-full h-5/7 flex flex-col justify-center items-center mb-3 mt-1 px-4">
       {rows}
       <Modal
-        isOpen={modalIsOpen}
-        className="z-10 flex flex-col justify-start items-center bg-gray-lightest border-3 border-gray"
-        contentLabel="Modal for calendar"
-        onRequestClose={() => setModalIsOpen(false)}
-        shouldCloseOnOverlayClick={false}
-      >
+  isOpen={modalIsOpen}
+  className="z-10 flex flex-col justify-start items-center bg-gray-lightest border-3 border-gray"
+  contentLabel="Modal for calendar"
+  onRequestClose={() => setModalIsOpen(false)}
+  shouldCloseOnOverlayClick={false}
+  style={{
+    overlay: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "transparent",
+    },
+    content: {
+      position: "relative",
+      top: "auto",
+      left: "auto",
+      right: "auto",
+      bottom: "auto",
+      maxWidth: "80%", // 최대 너비 설정
+      width: "60%", // 모달 내부 요소의 너비 설정
+      border: "1px solid blue", // 모달의 경계선 설정
+      borderRadius: "10px", // 모서리를 둥글게 설정
+      backgroundColor: "rgba(255, 255, 255, 0.75)",
+      overflow: "hidden",
+    },
+  }}
+>
         <div
           className={`w-full flex-row items-center p-3 px-6 grid grid-cols-10 bg-blue text-xl text-gray-lightest rounded-t-[20px]`}
         >
         </div>
         <div
-          className="flex w-full px-6 flex-col justify-start items-start overflow-y-scroll pb-5 no-scrollbar"
+          className="flex w-full px-6 flex-col justify-start items-start overflow-hidden pb-5 no-scrollbar"
         >
           <div className={`mt-3 w-full`}>
-            <button onClick={closeModal}>닫기</button>
             {ndata ? (
               <>
-                <span>{`내용: ${ndata.text}`}</span>
-                <span>{`감정: ${ndata.emotion}`}</span>
-                <img src={ndata.image} />
+                <span>내용:</span>
+        <div>{ndata.text}</div>
+        <hr className="my-4 w-full border-purple-300"/>
+        <span>감정:</span>
+        <div>{ndata.emotion}</div>
+        <img src={ndata.image} />
+        <div className="flex justify-center"> {/* 버튼을 중앙에 정렬 */}
                 <button
                   onClick={() => onDiaryOpen(ndata.date, ndata[0])}
-                  className="mt-4 p-2 bg-blue-500 text-white rounded"
+                  className="mt-4 p-2 bg-purple-500 text-white rounded"
                 >
                   전체보기
                 </button>
+                <span className="mx-2"></span> {/* 추가된 공백 */}
+                <span><button onClick={closeModal} className="mt-4 p-2 bg-purple-500 text-white rounded">닫기</button><br/></span>
+                </div>
               </>
             ) : (
               <></>
