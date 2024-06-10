@@ -78,9 +78,28 @@ const PoemDisplay = ({ entryId, po, save }) => {
     }
   }, [save]);
 
+  useEffect(() => {
+    if (!loading && !save) {
+      const imageElement = document.getElementById('poem-image');
+      if (imageElement) {
+        imageElement.remove();
+      }
+    }
+  }, [loading, save]);
+
   return (
     <div className="h-full flex flex-col w-full bg-purple-100 p-6 border rounded-lg shadow-md">
       <h2 className="text-2xl font-semibold mb-4 text-gray-800">Poem</h2>
+      {loading && save &&  <img
+    id="poem-image"
+    src="감성일기 곰돌이 시 생성.png"
+    alt="Generating Poem..."
+    style={{
+      display: 'block', // 이미지를 블록 레벨 요소로 설정하여 가운데 정렬을 적용합니다.
+      margin: 'auto',   // 가운데 정렬을 위해 margin을 auto로 설정합니다.
+      width: '30%',     // 이미지의 너비를 50%로 설정합니다. 필요에 따라 조절할 수 있습니다.
+    }}
+  />}
       <div className="bg-white/0 w-full p-4 border rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none mt-4"
       dangerouslySetInnerHTML={{ __html: poem }}>
       </div>
