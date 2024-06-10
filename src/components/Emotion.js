@@ -22,7 +22,7 @@ const Emotion = ({ onEmotion, emo }) => {
   };
 
   return (
-    <div className="w-full flex justify-center items-center gap-4 p-4">
+    <div className="flex justify-between gap-4 w-full">
       {emotions.map((em, index) => (
         <button
           key={index}

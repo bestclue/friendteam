@@ -178,64 +178,39 @@ const handleSend = async (message) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="flex flex-col h-full overflow-hidden">
-        {/* <div className="flex h-[50px] sm:h-[60px] border-b border-neutral-300 py-2 px-2 sm:px-8 items-center justify-between">
-          <div className="font-bold text-3xl flex text-center">
-            <a
-              className="ml-2 hover:opacity-50"
-              href="https://code-scaffold.vercel.app"
-            >
-              감성일기
-            </a>
-          </div>
-        </div> */}
+      <div className="py-4 h-full flex flex-col items-center justify-between">
 
-        <div className="flex-1 overflow-auto sm:px-10 pb-4 sm:pb-10">
-          <div className="max-w-[800px] mx-auto mt-4 sm:mt-12">
-            {/* AI 메시지 출력 */}
-            <div className="mb-4" style={{ overflowY: "hidden" }}>
-                {
-                (messages
-                  .filter((message) => message.role === "model")
-                  .slice(-1)
-                  .map((message, index) => (
-                    <div key={index} className="my-1 sm:my-1.5">
-                      <ChatBubble message={message} />
-                    </div>
-                  )))
-                }
-            </div>
-
-             {/* 이미지 출력 */}
-             <div className="mb-4">
-             <img
-                src={`감성일기 곰돌이 ${emotion}.png`}
-                alt={`감성일기 곰돌이 ${emotion}`}
-                width="700"
-                height="600"
-                style={{ marginTop: "150px" }}
-              />
-            </div>
-
-            {/* 사용자 메시지 출력
-            <div className="mb-4 overflow-y-auto" style={{ maxHeight: "200px" }}>
-              {messages
-                .filter((message) => message.role === "user")
-                .map((message, index) => (
-                  <div key={index} className="my-1 sm:my-1.5 text-right">
-                    <ChatBubble message={message} />
-                  </div>
-                ))}
-            </div> */}
-
-            <div ref={messagesEndRef} />
-          </div>
-        </div>
-
-        <div className="border-t border-neutral-300 py-2 px-8">
-          <ChatInput onSendMessage={handleSend} />
-        </div>
+{/* AI 메시지 출력 */}
+<div className="mb-4 w-full flex justify-center items-baseline">
+  {messages
+    .filter((message) => message.role === "model")
+    .slice(-1)
+    .map((message, index) => (
+      <div key={index} className="my-1">
+        <ChatBubble message={message} />
       </div>
+    ))
+  }
+</div>
+
+{/* 이미지 출력 */}
+<div className="flex justify-center items-baseline">
+  <img
+    src={`감성일기 곰돌이 ${emotion}.png`}
+    alt={`감성일기 곰돌이 ${emotion}`}
+    width="300"
+    height="500"
+  />
+</div>
+
+<div className="border-t border-neutral-300 pt-2 w-full ">
+  <ChatInput onSendMessage={handleSend} />
+</div>
+
+</div>
+
+
+
     </>
   );
 };
