@@ -82,24 +82,28 @@ const Main = () => {
   } else {
     return (
       <div className="flex flex-col h-screen">
-        <header className="bg-purple-300 shadow-md p-4 top-0 left-0 right-0 z-10 h-12">
-          <div className="container mx-auto flex justify-between items-center">
+        <header className="bg-purple-300 shadow top-0 left-0 right-0 h-14">
+          <div className="px-16 container mx-auto flex justify-between ">
+          <div className="flex grid-col">
+          <img src="/감성일기 곰돌이.png" alt="감성일기 곰돌이" width="60" height="60" style={{ marginRight: '10px' }} />
           <h1
-            className="text-2xl font-bold cursor-pointer grid "
+            className="text-2xl font-bold cursor-pointer pt-2.5"
             onClick={() => {
               handleDiaryClose();
               resetSearch(); // onClick 핸들러에 resetSearch 추가
               window.location.reload();
             }}
-            style={{ display: 'flex', alignItems: 'center' }}
+            // style={{ display: 'flex', alignItems: 'center' }}
           >
-              <img src="/감성일기 곰돌이.png" alt="감성일기 곰돌이" width="50" height="50" style={{ marginRight: '10px' }} />
-              감.성.일.기.
-            </h1>
-            <button onClick={handleSignOut} className="text-red-500 font-bold">sign out</button>
+          감.성.일.기.
+          </h1>
+          </div>
+
+            <button onClick={handleSignOut} className="text-red-500 font-semibold text-lg ">로그아웃</button>
           </div>
         </header>
-        <div className="flex flex-col md:flex-row p-6 bg-gradient-to-b from-purple-400 to-pink-400 flex-grow">
+
+        <div className="grid-col items-center flex md:flex-row p-6 bg-gradient-to-b from-purple-400 to-pink-400 ">
           <div className="md:w-1/4 h-full mb-6 md:mb-0 md:mr-6">
             <ChatPage
               name={session?.user?.name}
