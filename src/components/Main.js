@@ -81,26 +81,26 @@ const Main = () => {
 </div>;
   } else {
     return (
-      <div className="flex flex-col h-screen ">
-        <header className="bg-purple-300 shadow-md p-4 fixed top-0 left-0 right-0 z-10 h-12">
+      <div className="flex flex-col h-screen">
+        <header className="bg-purple-300 shadow-md p-4 top-0 left-0 right-0 z-10 h-12">
           <div className="container mx-auto flex justify-between items-center">
           <h1
-  className="text-xl font-bold cursor-pointer"
-  onClick={() => {
-    handleDiaryClose();
-    resetSearch(); // onClick 핸들러에 resetSearch 추가
-    window.location.reload();
-  }}
-  style={{ display: 'flex', alignItems: 'center' }}
->
-              <img src="/감성일기 곰돌이.png" alt="감성일기 곰돌이" width="30" height="30" style={{ marginRight: '10px' }} />
+            className="text-2xl font-bold cursor-pointer grid "
+            onClick={() => {
+              handleDiaryClose();
+              resetSearch(); // onClick 핸들러에 resetSearch 추가
+              window.location.reload();
+            }}
+            style={{ display: 'flex', alignItems: 'center' }}
+          >
+              <img src="/감성일기 곰돌이.png" alt="감성일기 곰돌이" width="50" height="50" style={{ marginRight: '10px' }} />
               감.성.일.기.
             </h1>
             <button onClick={handleSignOut} className="text-red-500 font-bold">sign out</button>
           </div>
         </header>
         <div className="flex flex-col md:flex-row p-6 bg-gradient-to-b from-purple-400 to-pink-400 flex-grow">
-          <div className="md:w-1/4 w-full mb-6 md:mb-0 md:mr-6">
+          <div className="md:w-1/4 h-full mb-6 md:mb-0 md:mr-6">
             <ChatPage
               name={session?.user?.name}
               className="border rounded-lg shadow-md bg-white p-4"
@@ -110,7 +110,7 @@ const Main = () => {
               onSearchDates={handleSearchDates}
             />
           </div>
-          <div className="md:w-3/4 w-full mr-6 mb-6 md:mb-0">
+          <div className="md:w-3/4 h-full mr-6 mb-6 md:mb-0">
             {showDiary ? (
               <Diary
                 name={session?.user?.name}

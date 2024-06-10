@@ -175,45 +175,68 @@ const RenderCells = ({
       backgroundColor: "transparent",
     },
     content: {
+      justifyContent: "center",
+      alignItems: "center",
       position: "relative",
       top: "auto",
       left: "auto",
       right: "auto",
       bottom: "auto",
-      maxWidth: "80%", // 최대 너비 설정
-      width: "60%", // 모달 내부 요소의 너비 설정
-      border: "1px solid blue", // 모달의 경계선 설정
+      maxWidth: "60%", // 최대 너비 설정
+      width: "40%", // 모달 내부 요소의 너비 설정
+      maxHeight: "70%", // 최대 너비 설정
+      height: "auto", // 모달 내부 요소의 너비 설정
+      border: "2px solid black", // 모달의 경계선 설정
       borderRadius: "10px", // 모서리를 둥글게 설정
-      backgroundColor: "rgba(255, 255, 255, 0.75)",
+      backgroundColor: "rgba(255, 255, 255, 0.9)",
       overflow: "hidden",
     },
   }}
 >
         <div
-          className={`w-full flex-row items-center p-3 px-6 grid grid-cols-10 bg-blue text-xl text-gray-lightest rounded-t-[20px]`}
+          className={`w-full flex-row items-center p-3 px-6 grid grid-cols-10 text-xl text-gray-lightest rounded-t-[20px]`}
         >
         </div>
         <div
           className="flex w-full px-6 flex-col justify-start items-start overflow-hidden pb-5 no-scrollbar"
         >
-          <div className={`mt-3 w-full`}>
+          <div className={` w-full`}>
+            
             {ndata ? (
               <>
-                <span>내용:</span>
-        <div>{ndata.text}</div>
-        <hr className="my-4 w-full border-purple-300"/>
-        <span>감정:</span>
-        <div>{ndata.emotion}</div>
-        <img src={ndata.image} />
+              <div 
+              className="px-2 flex justify-between items-center">
+              <span
+              className="font-bold text-2xl"
+              >{selectedDate}</span>
+              <div
+              className="font-bold text-xl"
+              >{ndata.emotion}</div>
+              </div>
+              <hr className="my-4 w-full border-purple-300"/>
+              <div
+              className="grid place-items-center">
+              <img className="w-10/12 mt-3 border border-gray-300 rounded-xl mb-4 bg-white" src={ndata.image} />
+              </div>
+              <hr className="my-4 w-full border-purple-300"/>
+
+          <div className="mt-2 h-12 break-words text-ellipsis overflow-hidden">
+            {ndata.text}
+          </div>
+
+
+
+
         <div className="flex justify-center"> {/* 버튼을 중앙에 정렬 */}
                 <button
                   onClick={() => onDiaryOpen(ndata.date, ndata[0])}
-                  className="mt-4 p-2 bg-purple-500 text-white rounded"
+                  className="mt-4 px-4 py-2 bg-purple-500 text-white rounded"
                 >
                   전체보기
                 </button>
-                <span className="mx-2"></span> {/* 추가된 공백 */}
-                <span><button onClick={closeModal} className="mt-4 p-2 bg-purple-500 text-white rounded">닫기</button><br/></span>
+                <span className="mx-4"></span> {/* 추가된 공백 */}
+                <span>
+                <button onClick={closeModal} className="mt-4 px-4 py-2 bg-purple-500 text-white rounded">닫기</button><br/></span>
                 </div>
               </>
             ) : (
