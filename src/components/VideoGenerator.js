@@ -83,20 +83,9 @@ const VideoGenerator = ({ url, entryId, vd, vsave, onLoadingComplete }) => {
 
   return (
     <div>
-      {videoUrl ? (
         <div>
           <video src={videoUrl} autoPlay loop width="600" />
         </div>
-      ) : (
-        <div className="loading-container">
-          <img
-            id="video-image"
-            src="감성일기 곰돌이 시 생성.png"
-            alt="Generating Video..."
-            className='h-24 w-20'
-          />
-        </div>
-      )}
     </div>
   );
 };
