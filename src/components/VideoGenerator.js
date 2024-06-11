@@ -76,7 +76,7 @@ const VideoGenerator = ({ url, entryId, vd, vsave, onLoadingComplete }) => {
   useEffect(() => {
     let interval;
     if (generationId) {
-      interval = setInterval(checkVideoResult, 5000); // Check every 10 seconds
+      interval = setInterval(checkVideoResult, 3000); // Check every 10 seconds
     }
     return () => clearInterval(interval); // Cleanup interval on component unmount
   }, [generationId]);
