@@ -56,7 +56,10 @@ const VideoGenerator = ({ url, entryId, vd, vsave, onLoadingComplete }) => {
     if (!generationId) return;
 
     try {
-      const response = await axios.get(`/api/get-video-result?generationId=${generationId}&apiKey=${apiKey}`);
+      const response = await axios.get(`/api/get-video-result`, {
+        params: { generationId, apiKey },
+        headers: { 'Authorization': `Bearer ${apiKey}` }
+      });
       if (response.status === 202) {
         setStatus("Generation is still running, try again in 10 seconds.");
       } else if (response.status === 200) {
