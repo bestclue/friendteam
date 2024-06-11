@@ -96,6 +96,7 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
 
       alert('멋진 일기가 작성되었어요! 시와 동영상을 만들어줄게요');
       setSave(true);
+      setvSave(true);
       setLoading(true); // 로딩 시작
     } catch (error) {
       console.error('Error saving document: ', error);
