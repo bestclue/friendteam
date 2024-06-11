@@ -4,7 +4,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 
 const VideoGenerator = ({ url, entryId, vd, vsave, onLoadingComplete }) => {
-  const apiKey = process.env.STABLE_DIFFUSION_API_KEY;
+  const apiKey = process.env.NEXT_PUBLIC_STABLE_DIFFUSION_API_KEY;
   const [generationId, setGenerationId] = useState(null);
   const [videoUrl, setVideoUrl] = useState(vd);
   const [status, setStatus] = useState(null);

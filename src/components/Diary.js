@@ -115,15 +115,13 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
       <div className="flex w-full gap-4 h-full">
         <div className="flex flex-col w-[55%] gap-4 h-full">
           <div className="flex-grow flex items-center w-7/8">
-            {!videoUrl ? (
-              <ImageUpload 
+              {!videoUrl && <ImageUpload 
                 ondownload={handleImageUpload} 
                 name={name} 
                 className="h-full" 
                 date={date} 
                 u={url} // Pass the image URL from state
-              />
-            ) : (
+              />}
               <VideoGenerator 
                 url={url} // Pass the video URL from state
                 entryId={entryId} 
@@ -131,7 +129,6 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
                 vsave={vsave}
                 onLoadingComplete={handleLoadingComplete}
               />
-            )}
           </div>
           <div>
             <Emotion 
