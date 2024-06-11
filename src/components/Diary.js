@@ -123,7 +123,7 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
               />
             ) : (
               <VideoGenerator 
-                url={videoUrl} // Pass the video URL from state
+                url={url} // Pass the video URL from state
                 entryId={entryId} 
                 vd={videoUrl}
                 save={save}

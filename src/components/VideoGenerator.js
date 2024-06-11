@@ -84,7 +84,7 @@ const VideoGenerator = ({ url, entryId, vd, save, onLoadingComplete }) => {
     <div>
       {videoUrl ? (
         <div>
-          <video src={videoUrl} controls autoPlay loop width="600" />
+          <video src={videoUrl} autoPlay loop width="600" />
         </div>
       ) : (
         <div className="loading-container">
