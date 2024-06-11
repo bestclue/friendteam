@@ -75,7 +75,7 @@ const VideoGenerator = ({ url, entryId, vd, save, onLoadingComplete }) => {
   useEffect(() => {
     let interval;
     if (generationId) {
-      interval = setInterval(checkVideoResult, 10000); // Check every 10 seconds
+      interval = setInterval(checkVideoResult, 5000); // Check every 10 seconds
     }
     return () => clearInterval(interval); // Cleanup interval on component unmount
   }, [generationId]);
@@ -84,7 +84,7 @@ const VideoGenerator = ({ url, entryId, vd, save, onLoadingComplete }) => {
     <div>
       {videoUrl ? (
         <div>
-          <video src={videoUrl} controls autoPlay loop width="600" />
+          <video src={videoUrl} autoPlay loop width="600" />
         </div>
       ) : (
         <div className="loading-container">

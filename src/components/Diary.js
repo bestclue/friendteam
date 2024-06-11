@@ -29,7 +29,7 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
 
   const handleImageUpload = (url) => {
     if (!url) {
-      alert('Please select an image before uploading.');
+      alert('이미지를 올려주세요!');
       return;
     }
     setUrl(url);
@@ -93,12 +93,12 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
         console.log('Document written with ID: ', docRef.id);
       }
 
-      alert('Your diary has been successfully saved!');
+      alert('멋진 일기가 작성되었어요! 시와 동영상을 만들어줄게요');
       setSave(true);
       setLoading(true); // 로딩 시작
     } catch (error) {
       console.error('Error saving document: ', error);
-      alert('There was a problem saving your diary. Please try again.');
+      alert('오류가 발생했어요. 다시 시도해주세요!');
     }
   };
 
@@ -123,7 +123,7 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
               />
             ) : (
               <VideoGenerator 
-                url={videoUrl} // Pass the video URL from state
+                url={url} // Pass the video URL from state
                 entryId={entryId} 
                 vd={videoUrl}
                 save={save}
@@ -150,7 +150,7 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
         <textarea
           className="bg-white/0 w-[45%] p-4 border rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none h-9/10 mt-9"
           rows="10"
-          placeholder="Write about your day here"
+          placeholder="오늘 하루를 정리해주세요!"
           value={text}
           onChange={handleTextChange}
         ></textarea>
