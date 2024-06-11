@@ -85,11 +85,13 @@ const VideoGenerator = ({ url, entryId, vd, vsave, onLoadingComplete }) => {
   }, [generationId]);
 
   return (
-    <div>
+    <>
+    {videoUrl && (
         <div>
           <video src={videoUrl} autoPlay loop width="600" />
         </div>
-    </div>
+  )}
+  </>
   );
 };
 
