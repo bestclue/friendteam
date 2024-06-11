@@ -12,8 +12,8 @@ export async function POST(req) {
     const data = new FormData();
     data.append("image", imageBuffer, "image.png");
     data.append("seed", 0);
-    data.append("cfg_scale", 0.5);
-    data.append("motion_bucket_id", 10);
+    data.append("cfg_scale", 1.8);
+    data.append("motion_bucket_id", 127);
 
     const response = await axios.request({
       url: `https://api.stability.ai/v2beta/image-to-video`,
