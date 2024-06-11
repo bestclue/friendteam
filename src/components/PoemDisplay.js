@@ -80,23 +80,27 @@ const PoemDisplay = ({ entryId, po, save, onLoadingComplete }) => {
   }, [save]);
 
   return (
-    <div className="h-full flex flex-col w-full bg-purple-100 p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold text-gray-800">오늘의 시</h2>
-      {loading && save ? (
-        <div className="loading-container">
-          <img
-            id="poem-image"
-            src="감성일기 곰돌이 시 생성.png"
-            alt="Generating Poem..."
-            className='h-24 w-20'
-          />
-        </div>
-      ) : (
-        <div className="overflow-auto bg-white/0 w-full h-24 p-4 mt-4"
-          dangerouslySetInnerHTML={{ __html: poem }}>
-        </div> 
-      )}
-    </div>
+    <>
+    {poem && (
+      <div className="h-full flex flex-col w-full bg-purple-100 p-6 rounded-lg shadow-md">
+        <h2 className="text-xl font-semibold text-gray-800">오늘의 시</h2>
+        {loading && save ? (
+          <div className="loading-container">
+            <img
+              id="poem-image"
+              src="감성일기 곰돌이 시 생성.png"
+              alt="Generating Poem..."
+              className='h-24 w-20'
+            />
+          </div>
+        ) : (
+          <div className="overflow-auto bg-white/0 w-full h-24 p-4 mt-4"
+            dangerouslySetInnerHTML={{ __html: poem }}>
+          </div> 
+        )}
+      </div>
+    )}
+  </>
   );
 };
 
