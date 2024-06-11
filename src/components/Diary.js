@@ -13,6 +13,7 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
   const [emotion, setEmotion] = useState('');
   const [entryId, setEntryId] = useState('');
   const [save, setSave] = useState(false);
+  const [vsave, setvSave] = useState(false);
   const [sentenceCount, setSentenceCount] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -126,7 +127,7 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
                 url={url} // Pass the video URL from state
                 entryId={entryId} 
                 vd={videoUrl}
-                save={save}
+                vsave={vsave}
                 onLoadingComplete={handleLoadingComplete}
               />
             )}

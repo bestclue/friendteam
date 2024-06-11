@@ -3,7 +3,7 @@ import axios from "axios";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 
-const VideoGenerator = ({ url, entryId, vd, save, onLoadingComplete }) => {
+const VideoGenerator = ({ url, entryId, vd, vsave, onLoadingComplete }) => {
   const apiKey = process.env.STABLE_DIFFUSION_API_KEY;
   const [generationId, setGenerationId] = useState(null);
   const [videoUrl, setVideoUrl] = useState(vd);
@@ -29,10 +29,11 @@ const VideoGenerator = ({ url, entryId, vd, save, onLoadingComplete }) => {
       }
     };
 
-    if(save) {
+    if(vsave) {
       generateVideo();
+      console.log("시작");
     }
-  }, [save]);
+  }, [vsave]);
 
   useEffect(() => {
     console.log('useEffect 호출');
