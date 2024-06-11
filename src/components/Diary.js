@@ -146,7 +146,6 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
                 onLoadingComplete={handleLoadingComplete}
               />
               {/* Add the image here */}
-              <img src={url} alt="Poem Image" className="w-full max-w-[300px] mx-auto mt-4" />
             </div>
           }
         </div>
@@ -166,11 +165,6 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
           Save Diary
         </button>
       </div>
-      {loading && (
-        <div className="loading-overlay">
-          <img src="감성일기 곰돌이 시 생성.png" alt="Loading..." className="loading-image" />
-        </div>
-      )}
     </div>
   );
 };
