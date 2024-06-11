@@ -137,7 +137,6 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
               onEmotion={handleEmotion}
             />
           </div>
-          {data?.poem && 
             <div className="mt-8">
               <PoemDisplay 
                 entryId={entryId} 
@@ -147,7 +146,6 @@ const Diary = ({ onChat, user, onSave, ondiaryinput, name, date, data, onEmotion
               />
               {/* Add the image here */}
             </div>
-          }
         </div>
         <textarea
           className="bg-white/0 w-[45%] p-4 border rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none h-9/10 mt-9"
