@@ -26,7 +26,7 @@ const extractTextInBrackets = (text) => {
   while ((match = regex.exec(text)) !== null) {
     matches.push(match[1]);
   }
-  console.log(mathch);
+  console.log(match);
   return matches;
 };
 
