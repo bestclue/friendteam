@@ -111,7 +111,7 @@ const Main = () => {
               className="border rounded-lg shadow-md bg-white p-4"
               parsedData={parsedData}
               selectedEmotion={selectedEmotion}
-              monthData={showDiary ? null : monthdata}
+              monthData={monthdata}
               onSearchDates={handleSearchDates}
             />
           </div>
