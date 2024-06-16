@@ -19,10 +19,7 @@ const VideoGenerator = ({ url, entryId, vd, vsave, onLoadingComplete }) => {
       }
 
       try {
-        const response = await axios.get(`/api/get-video-result`, {
-        params: { generationId, apiKey },
-        headers: { 'Authorization': `Bearer ${apiKey}` }
-      });
+        const response = await axios.post("/api/generate-video", { apiKey, imageUrl: url });
         console.log("Generation ID received:", response.data.generationId);
         setGenerationId(response.data.generationId);
         setStatus("Video generation started...");
