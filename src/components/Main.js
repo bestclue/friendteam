@@ -62,6 +62,7 @@ const Main = () => {
 
   const handleMonthData = (data) => {
     setMonthData(data);
+    console.log(data);
   };
 
   const handleSearchDates = (dates) => {
