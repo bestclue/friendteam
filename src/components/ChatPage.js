@@ -171,7 +171,7 @@ const handleSend = async (message) => {
     handleEmotionSelect(selectedEmotion);
   }}, [selectedEmotion]);
 
-  return (
+if(monthData)  return (
     <>
       <Head>
         <title>A Simple Chatbot</title>
