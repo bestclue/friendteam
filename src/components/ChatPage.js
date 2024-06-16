@@ -26,12 +26,14 @@ const extractTextInBrackets = (text) => {
   while ((match = regex.exec(text)) !== null) {
     matches.push(match[1]);
   }
+  console.log(mathch);
   return matches;
 };
 
 // 일기 데이터에서 대괄호로 둘러싼 텍스트와 일치하는 날짜를 찾아 반환합니다.
 const findDatesFromText = (text) => {
   const searchKeywords = extractTextInBrackets(text);
+  console.log(monthData);
   const foundDates = [];
   for (const keyword of searchKeywords) {
     for (const entry of monthData) {
